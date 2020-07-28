@@ -8,8 +8,11 @@ class Controller{
     private $rendered = false;
 
     function __construct($request=null){
+
+        $this->Session = new Session();
         if ($request){
             $this->request = $request;
+            require ROOT.DS.'config'.DS.'hook.php';
         }
     }
     public function render($view){

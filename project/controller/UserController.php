@@ -27,11 +27,20 @@ class UserController extends Controller{
 
         }
         if ($this->Session->isLogged()){
-            redirect(BASE_URL.DS.'product'.DS);
+            if ($this->Session->isAdmin()){
+                redirect(BASE_URL.DS.'admin'.DS.'articles');
+            }else{
+                redirect(BASE_URL.DS.'product'.DS);
+            }
         }
                 
         
         
+    }
+
+    function logout(){
+        unset($_SESSION['User']);
+        redirect(BASE_URL.DS.'product'.DS);
     }
 
     

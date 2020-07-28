@@ -30,8 +30,7 @@ class Dispatcher {
         require $file;
         $controller = new $name($this->request);
 
-        $controller->Session = new Session();
-
+        
         return $controller;
     }
 }

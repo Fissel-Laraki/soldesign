@@ -93,4 +93,38 @@ class Model{
         return $res->count;
     }
 
+    public function getId($req){
+        $element = $this->findFirst($req);
+        $key = $this->primaryKey;
+        $element_id = $element->{$key};
+        return $element_id;
+    }
+
+    public function delete($id){
+        $sql = 'DELETE FROM '.$this->table. ' WHERE '.$this->primaryKey. '=' .$id;
+        $pre = $this->db->prepare($sql);
+        $pre->execute();
+    }
+
+    public function getLastId(){
+        return $this->db->lastInsertId();
+    }
+
+    public function edit($id,$data){
+        
+       $sql = 'UPDATE '. $this->table . ' SET ';
+       $values = array();
+       foreach($data as $k=>$v){
+           if(!is_numeric($v)){
+                $v = $this->db->quote($v);
+           }
+           $values[] = "$k=$v";
+       }
+
+       $sql .= implode(',',$values);
+       $sql .= ' WHERE '.$this->primaryKey.'='.$id . ';'; 
+       $pre = $this->db->prepare($sql);
+       $pre->execute();
+    }
+
 }
