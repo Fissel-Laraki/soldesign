@@ -8,6 +8,7 @@ class Request{
 
     function __construct(){
         $this->url = $_SERVER['PATH_INFO'];
+        $this->full_url = $_SERVER['REQUEST_URI'];
 
 
         if (!empty($_GET)){

@@ -1,0 +1,55 @@
+<?php 
+    $title_layout = "Mes commandes";
+    $otherCss[] = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'user'.DS.'orders.css">';
+?>
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">Mes commandes</h1>
+     </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <div class="col-10 overflow-auto scroll">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <th scope="col">#</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                </thead>
+                <tbody>
+                    <?php $i = 1; ?>
+                    <?php foreach($orders as $order) : ?>
+                    <tr data-oid=<?=$order->oid?> data-i = <?=$i?> class="classTr">
+                        <td><?=$i?></td>
+                        <td><?=$order->date?></td>
+                        <td><?=$order->total?></td>
+                        <td><?=$order->status?></td>
+                    </tr>
+                    <?php $i += 1;?>
+                    <?php endforeach ;?>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-2 d-none" id="tableContainer">
+            <table class="table table-bordered">
+                <caption id="caption">Détails de la commande numéro </caption>
+                <thead class="table-dark">
+                        <th>Image</th>
+                        <th>Article</th>
+                        <th>Format</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                </thead>
+                <tbody id="details">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?php 
+    $otherScript = '<script src='.SOURCE.DS.'js'.DS.'user'.DS.'orders.js>'.'</script>';
+?>

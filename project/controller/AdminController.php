@@ -14,13 +14,17 @@ class AdminController extends Controller{
 
         $this->loadModel('Category');
 
+
+        $this->loadModel('Format');
         
         $products = $this->Product->find(array());
         $series = $this->Serie->find(array());
         $categories = $this->Category->find(array());
+        $formats = $this->Format->find(array());
         $data['categories'] = $categories;
         $data['series'] = $series;
         $data['products'] = $products;
+        $data['formats'] = $formats;
         $this->set($data);
         
     }
@@ -45,17 +49,6 @@ class AdminController extends Controller{
 
         $data = $this->request->data;
         $files = diverse_array($_FILES['files']);
-
-
-        $sid = $this->Serie->getId(array(
-            'conditions' => array('name' => $data->serie)
-        ));
-        $cid = $this->Category->getId(array(
-            'conditions' => array('name' => $data->category)
-        ));
-
-        $data->serie = $sid;
-        $data->category = $cid;
         $data->img_url = $_FILES['file']['name'];
     
 
@@ -161,7 +154,7 @@ class AdminController extends Controller{
             unset($data->serie);
             unset($data->category);
 
-            $this->Product->edit($id,$this->request->data);
+            $this->Product->edit($id,$data);
             redirect(BASE_URL.DS.'admin'.DS.'articles');
         }
 
@@ -194,8 +187,12 @@ class AdminController extends Controller{
         $this->Category->primaryKey = 'cid';
         
         $data = $this->request->data;
+        $data->img_url = $_FILES['file']['name'];
 
         $this->Category->insert($data);
+
+        $dest = WEBROOT.DS.'img'.DS.'categories';
+        move_uploaded_file($_FILES['file']['tmp_name'],$dest.DS.$_FILES['file']['name']);
 
         redirect(BASE_URL.DS.'admin'.DS.'categories');
     }
@@ -215,8 +212,16 @@ class AdminController extends Controller{
 
             
         }else{
+            $data = $this->request->data;
+            if ($_FILES['file']['name']){
+                $dest = WEBROOT.DS.'img'.DS.'categories';
+                unlink($dest.$product->img_url);
+                $data->img_url = $_FILES['file']['name'];
+                move_uploaded_file($_FILES['file']['tmp_name'],$dest.$_FILES['file']['name']);
+            }
+            
 
-            $this->Category->edit($cid,$this->request->data);
+            $this->Category->edit($cid,$data);
             redirect(BASE_URL.DS.'admin'.DS.'categories');
 
         }
@@ -295,4 +300,16 @@ class AdminController extends Controller{
     }
     
     
+    function orders(){
+        $this->loadModel('Orders');
+        $orders = $this->Orders->getWaitOrders();
+        $data['orders'] = $orders;
+        $this->set($data);
+    }
+
+    function updateOrder($oid){
+        $this->loadModel('Orders');
+        $this->Orders->update(" status = 'Traitée' ", " oid = ".$oid);
+        
+    }
 }

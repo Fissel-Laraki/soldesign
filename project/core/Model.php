@@ -72,10 +72,10 @@ class Model{
                 $sql .= implode(' AND ',$cond);
             }
         }
+
         if (isset($req['limit'])){
             $sql.= ' LIMIT '.$req['limit'];
         }
-
         $pre = $this->db->prepare($sql);
         $pre->execute();
         return $pre->fetchAll(PDO::FETCH_OBJ);
@@ -125,6 +125,25 @@ class Model{
        $sql .= ' WHERE '.$this->primaryKey.'='.$id . ';'; 
        $pre = $this->db->prepare($sql);
        $pre->execute();
+    }
+
+    public function update($newC,$target){
+        $sql = "UPDATE ".$this->table ." SET ";
+        if (is_array($newC)){
+            if(!empty($newC)){
+                foreach($newC as $k => $v){
+                    $cond[] = "$k = $v"; 
+                }
+                $sql .= implode(' , ',$cond);
+
+            }
+        }else{
+            $sql .= $newC;
+        }
+        $sql .= " WHERE " . $target;
+        $pre = $this->db->prepare($sql);
+        $pre->execute();
+
     }
 
 }

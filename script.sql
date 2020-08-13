@@ -1,8 +1,8 @@
--- MariaDB dump 10.17  Distrib 10.4.13-MariaDB, for Linux (x86_64)
+-- MariaDB dump 10.17  Distrib 10.4.10-MariaDB, for Win64 (AMD64)
 --
 -- Host: localhost    Database: soldesign
 -- ------------------------------------------------------
--- Server version	10.4.13-MariaDB
+-- Server version	10.4.10-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `category` (
   `name` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
   `img_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,8 +36,32 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'toutes',NULL),(5,'testC',NULL);
+INSERT INTO `category` VALUES (1,'toutes',NULL),(5,'testC',NULL),(6,'toto',NULL),(7,'totok',NULL),(8,'erza','Ciel2.PNG');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `lnk_orders_product`
+--
+
+DROP TABLE IF EXISTS `lnk_orders_product`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lnk_orders_product` (
+  `oid` int(10) NOT NULL,
+  `pid` int(10) NOT NULL,
+  KEY `oid` (`oid`),
+  KEY `pid` (`pid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `lnk_orders_product`
+--
+
+LOCK TABLES `lnk_orders_product` WRITE;
+/*!40000 ALTER TABLE `lnk_orders_product` DISABLE KEYS */;
+/*!40000 ALTER TABLE `lnk_orders_product` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -54,7 +78,7 @@ CREATE TABLE `media` (
   PRIMARY KEY (`mid`),
   KEY `aid` (`aid`),
   CONSTRAINT `media_ibfk_1` FOREIGN KEY (`aid`) REFERENCES `product` (`pid`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,8 +87,32 @@ CREATE TABLE `media` (
 
 LOCK TABLES `media` WRITE;
 /*!40000 ALTER TABLE `media` DISABLE KEYS */;
-INSERT INTO `media` VALUES (40,'baltimore_final2.jpg',28);
+INSERT INTO `media` VALUES (41,'baltimore_detalle_final.jpg',28);
 /*!40000 ALTER TABLE `media` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orders` (
+  `oid` int(10) NOT NULL AUTO_INCREMENT,
+  `uid` int(10) NOT NULL,
+  PRIMARY KEY (`oid`),
+  KEY `uid` (`uid`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -138,8 +186,9 @@ CREATE TABLE `user` (
   `name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `level` int(3) DEFAULT NULL,
+  `firstname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +197,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'laraki@gmail.com','laraki','b4518cfa2a3501eb3086f489823f898fcdac275b',3),(2,'fissel@gmail.com','laraki','b4518cfa2a3501eb3086f489823f898fcdac275b',3),(3,'admin@gmail.com','admin','d033e22ae348aeb5660fc2140aec35850c4da997',2);
+INSERT INTO `user` VALUES (1,'laraki@gmail.com','laraki','b4518cfa2a3501eb3086f489823f898fcdac275b',3,NULL),(2,'fissel@gmail.com','laraki','b4518cfa2a3501eb3086f489823f898fcdac275b',3,NULL),(3,'admin@gmail.com','admin','d033e22ae348aeb5660fc2140aec35850c4da997',2,NULL),(4,'rzae@rzae.com','azerzaer','1696581c6fbda0a52fa9df29461726e1ee9bd384',NULL,'razereza');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -161,4 +210,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-28 18:01:24
+-- Dump completed on 2020-07-29 18:47:56

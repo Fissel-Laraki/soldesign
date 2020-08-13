@@ -8,7 +8,10 @@ class MainController extends Controller{
         $this->Category->primaryKey = 'cid';
 
         $categories = $this->Category->find(array());
+        unset($categories[0]);
         $data['categories'] = $categories;
+
+        
         
 
         $this->set($data);

@@ -15,20 +15,26 @@ class Session{
     }
 
     public function setFlash($message,$type='danger'){
-        $_SESSION['flash'] = array(
+        $_SESSION['Flash'] = array(
             'message' => $message,
             'type' => $type
         );
     }
 
     public function flash(){
-        if (isset($_SESSION['flash'])){
-            return '<div class="alert alert-'.$_SESSION['flash']['type'].'" role="alert">'.$_SESSION['flash']['message'].'</div>';
+        if (isset($_SESSION['Flash'])){
+            $res = '<div class="alert alert-'.$_SESSION['Flash']['type'].'" role="alert">'.$_SESSION['Flash']['message'].'</div>';
+            unset($_SESSION['Flash']);
+            return $res;
         }
     }
 
     public function set($key,$value){
         $_SESSION[$key] = $value;
+    }
+
+    public function unset($key){
+        unset($_SESSION[$key]);
     }
 
     public function get($key){
@@ -52,15 +58,45 @@ class Session{
         return false;
     }
 
-    public function addCart($id,$price,$name){
+    public function addCart($id,$product){
+        $product->price = $product->price*(1-($product->promotion/100));
         if (isset($_SESSION['Cart'][$id])){
             $_SESSION['Cart'][$id]['quantity'] +=  1;
         }else{
             $_SESSION['Cart'][$id] = array(
-                'name' => $name,
-                'quantity' => 1,
-                'price' => $price
+                'product' => $product,
+                'quantity' => 1
             );
         }
+    }
+
+    public function deleteCart($id){
+        unset($_SESSION['Cart'][$id]);
+    }
+
+    public function emptyCart(){
+        unset($_SESSION['Cart']);
+    }
+
+    public function updateCart($id,$quantity){
+        $_SESSION['Cart'][$id]['quantity'] = $quantity;
+    }
+
+    public function getTotal(){
+        $total = 0;
+        if (!isset($_SESSION['Cart'])) return $total;
+        foreach($_SESSION['Cart'] as $item) {
+            $total = $total + $item['quantity'];
+        }
+        return $total;
+    }
+
+    public function getTotalPrice(){
+        $total = 0.0;
+        if (!isset($_SESSION['Cart'])) return $total;
+        foreach($_SESSION['Cart'] as $item) {
+            $total = $total + $item['product']->price * $item['quantity'];
+        }
+        return $total;
     }
 }

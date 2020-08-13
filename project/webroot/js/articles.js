@@ -1,4 +1,0 @@
-$("#addBtn").click(()=>{
-
-    $("#addArticleForm").toggle();
-});

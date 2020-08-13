@@ -1,79 +1,177 @@
 <?php 
     $logged = $this->Session->isLogged();
     $admin = $this->Session->isAdmin();     
+    $title_layout = isset($title_layout) ? $title_layout : 'Page';
+    $showCart = isset($showCart)? $showCart : false;
+   
+    
+    
 ?>
 
-<html>
+<html class="h-100">
     <head>
-        <title><?= $title_layout ?></title>
+        <title><?=$title_layout?></title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-        <link rel="stylesheet" href="<?=SOURCE.DS.'css'.DS.'layout'.DS.'default.css'?>">
-        <?=$otherCss?>
+        <meta charset="utf-8">
+        
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="" name="keywords">
+        <meta content="" name="description">
 
+        <!-- Favicons -->
+        <link href="img/favicon.png" rel="icon">
+        <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
 
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Montserrat:300,400,500,700" rel="stylesheet">
+
+        <!-- Bootstrap CSS File -->
+        <link href="<?=SOURCE.DS.'lib/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+
+        <!-- Libraries CSS Files -->
+        <link href="<?=SOURCE.DS.'lib/font-awesome/css/font-awesome.min.css'?>" rel="stylesheet">
+        <link href="<?=SOURCE.DS.'lib/animate/animate.min.css'?>" rel="stylesheet">
+        <link href="<?=SOURCE.DS.'lib/ionicons/css/ionicons.min.css'?>" rel="stylesheet">
+        <link href="<?=SOURCE.DS.'lib/owlcarousel/assets/owl.carousel.min.css'?>" rel="stylesheet">
+        <link href="<?=SOURCE.DS.'lib/lightbox/css/lightbox.min.css'?>" rel="stylesheet">
+
+        <!-- Main Stylesheet File -->
+        <link href="<?=SOURCE.DS.'css'.DS.'layout'.DS.'style.css'?>" rel="stylesheet">
+        <?php if(isset($otherCss)) : ?>
+            <?php if(is_array($otherCss)): ?>
+            <?php foreach($otherCss as $o) {
+                echo $o;
+            }
+            ?>
+            <?php else: ?>
+                <?=$otherCss?>
+            <?php endif?>
+        <?php endif;?>
+
 
 
     </head>
     
-    <body>
-        <?php if ($logged) :
-            echo 'Bonjour monsieur '.$this->Session->get('User')->name;
-        endif;
-        ?>
-            <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
-                
-                <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+    <body class="d-flex flex-column h-100">
+         <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+            <div class="container">
+                <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">SOL DESIGN</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="collapse_target">
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                <?php if(!$admin) : ?>
+                    <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Home
+                        </a>
+                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
+                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
+                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
+                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#contact" >Nous contacter</a>
+                      
+                        </div>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?=BASE_URL.DS.'product'.DS?>">Nos produits</a>
+                    </li>
+                   
+                    <?php if (!$logged) :?>
+                    <li  class="nav-item">
+                        <a class="nav-link" href="<?= BASE_URL.DS.'user'.DS.'login'?>">Connexion</a>
+                    </li>
+                    <?php endif;?>
+                    <?php if ($title_layout === "Nos produits"):?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?=BASE_URL.DS.'product'.DS.'cart'?>"><span class="oi oi-cart"></span></a>
+                    </li>
+                    <?php endif; ?>
+                <?php else: ?>
+                     <li class="nav-item dropdown active">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Gerer
+                        </a>
+                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
+                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
+                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>
 
-                    <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">SOL DESIGN</a>
-                    <li class="divider"></li>
-                    <li class="divider"></li>
-                    <li class="divider"></li>
-                    <ul class="navbar-nav" id="navbar">
-                        <?php if(!$admin) : ?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo BASE_URL.DS.'main'.DS.'index' ?>">Accueil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo BASE_URL.DS.'product'.DS.'index'?>">Nos Produits</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo BASE_URL.DS.'main'.DS.'about' ?>">A Propos</a>
-                            </li>
-                        <?php endif;?>
-                        <?php if($logged) : ?>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Paramètres
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Mes commandes</a>
-                                    <a class="dropdown-item" href="<?php echo BASE_URL.DS.'user'.DS.'account' ?>">Mon compte</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Deconnexion</a>
-                                </div>
-                            </li>
-                        <?php endif;?>
-                            
-                            
-                        <?php if (!$logged) :?>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?= BASE_URL.DS.'user'.DS.'login'?>">Connexion</a>
-                            </li>
-                        <?php endif; ?>
-
-                    </ul>
+                      
+                        </div>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?=BASE_URL.DS.'admin'.DS.'orders'?>">Commandes</a>
+                        </li>
+                    </li>
+                <?php endif;?>
+                <?php if($logged) : ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Paramètres
+                        </a>
+                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                            <?php if (!$admin) : ?>
+                            <a class="dropdown-item" href="<?php echo BASE_URL.DS.'user'.DS.'orders'?>">Mes commandes</a>
+                            <? endif;?>
+                            <a class="dropdown-item" href="<?php echo BASE_URL.DS.'user'.DS.'account'?>">Mon compte</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Déconnexion</a>
+                        </div>
+                    </li>
+                <?php endif;?>
+                </ul>
                 </div>
-            </nav>
+            </div>
+        </nav> 
+        
+        <?php if (!$admin && $showCart):?>
+        <div style="text-align : right">
+        <a style="margin : 30px;" href="<?=BASE_URL.DS.'product'.DS.'cart'?>" class="btn btn-dark btn-lg">
+            <i class="fa fa-shopping-cart" aria-hidden="true" id="totalCart">   <?=$this->Session->getTotal('Cart');?></i>
+        </a>
+        </div>
+        <?php endif;?>
+
+
 
         <?= $layoutContent?>
+
+        <footer class="footer mt-auto py-3 bg-dark text-white">
+            <div class="container text-center">
+                <small>Copyright &copy; Your Website</small>
+            </div>
+        </footer>
+        
+
+        
+        <!-- JavaScript Libraries -->
+        <script src="<?=SOURCE.DS.'lib/jquery/jquery.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/jquery/jquery-migrate.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/bootstrap/js/bootstrap.bundle.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/easing/easing.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/superfish/hoverIntent.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/superfish/superfish.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/wow/wow.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/waypoints/waypoints.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/counterup/counterup.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/owlcarousel/owl.carousel.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/isotope/isotope.pkgd.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/lightbox/js/lightbox.min.js'?>"></script>
+        <script src="<?=SOURCE.DS.'lib/touchSwipe/jquery.touchSwipe.min.js'?>"></script>
+        <!-- Contact Form JavaScript File -->
+        <script src="<?=SOURCE.DS.'js'.DS.'layout'.'contactform.js'?>"></script>
+
+        <!-- Template Main Javascript File -->
+        <script src="<?=SOURCE.DS.'js'.DS.'layout'.DS.'main.js'?>"></script>
+
+        <?= isset($otherScript)? $otherScript:null ?>
 
 
     </body>

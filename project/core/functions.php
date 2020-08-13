@@ -24,3 +24,11 @@ function diverse_array($vector) {
     return $result;
 }
 
+function title($text){
+    
+    echo "<section class=\"jumbotron text-center\">
+        <div class=\"container\">
+            <h1 class=\"jumbotron-heading\">".$text."</h1>
+        </div>
+    </section>";
+}
