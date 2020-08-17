@@ -8,6 +8,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
+      <button type="button" id="addBtn" class="btn btn-dark my-5">Ajouter un article</button>
 			<h4>Articles</h4>
 			<div class="table-responsive">
 				<table id="mytable" class="table table-bordred table-striped">
@@ -65,7 +66,6 @@
 					</tbody>
 				</table>
 				<div class="clearfix"></div>
-        <button id="addBtn" class="btn btn-primary">Ajouter un article</button>
 			</div>
 		</div>
 	</div>
@@ -82,6 +82,10 @@
 
 
 <form method="POST" action="<?=BASE_URL.DS.'admin'.DS.'addArticle'?>" enctype="multipart/form-data" id="addForm" style="width:30%;margin-right:auto;margin-left:auto;margin-bottom:100px">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+
   <div class="form-group">
     <label for="exampleInputEmail1">Name</label>
     <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -110,6 +114,10 @@
       <?php endforeach; ?>
     </select>
   </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+      <div class="col">
+
   <div class="form-group">
     <label for="exampleFormControlSelect1">Category</label>
     <select name="category" class="form-control" >
@@ -128,11 +136,14 @@
   <div class="form-group">
     <label for="files" class="label-file">Ajouter des images secondaires</label>
     <input type="file" name="files[]" class="form-control input-file" id="files" onchange="loadFiles(event)" multiple>
-    <div id="imagesContainer">
+    <div id="imagesContainer" class="row">
 
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+
+  </div>
 </form>
 
 <?php 

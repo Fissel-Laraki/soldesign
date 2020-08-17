@@ -1,5 +1,5 @@
 const BASE_URL = "/soldesign/project/";
-function details(oid,i){
+function details(oid,j){
     let url  = BASE_URL+"user/orderDetail/"+oid;
     let text = "";
     $.get(url,function(data,status){
@@ -27,7 +27,7 @@ function details(oid,i){
             text = text + "</tr>";
         });
         
-        $("#caption").html("Détails de la commande numéro "+i);
+        $("#caption").html("Détails de la commande numéro "+j);
         table.html(text);
     });
 }
@@ -41,7 +41,6 @@ $("tr.classTr").click(function(event){
     parent = event.target.parentNode;
     oid = parent.dataset.oid;
     i = parent.dataset.i;
-    console.log(oid); 
     details(oid,i);
     parent.classList.add("table-info");
     
@@ -50,7 +49,6 @@ $("tr.classTr").click(function(event){
 $(".confirm-btn").click(function(event){
     oid = $(this).data('oid');
     let url = BASE_URL+"admin/updateOrder/"+oid;
-    console.log(url);
     $.get(BASE_URL+"admin/updateOrder/"+oid);
     $('.classTr[data-oid='+oid+']').hide();
 });

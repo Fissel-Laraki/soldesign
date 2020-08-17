@@ -80,22 +80,22 @@ class Session{
 
     public function updateCart($id,$quantity){
         $_SESSION['Cart'][$id]['quantity'] = $quantity;
-    }
+                        }
 
     public function getTotal(){
         $total = 0;
         if (!isset($_SESSION['Cart'])) return $total;
-        foreach($_SESSION['Cart'] as $item) {
+        /*foreach($_SESSION['Cart'] as $item) {
             $total = $total + $item['quantity'];
-        }
-        return $total;
+        }*/
+        return count($_SESSION['Cart']);
     }
 
     public function getTotalPrice(){
-        $total = 0.0;
+        $total = 0;
         if (!isset($_SESSION['Cart'])) return $total;
         foreach($_SESSION['Cart'] as $item) {
-            $total = $total + $item['product']->price * $item['quantity'];
+            $total = $total + round(($item['product']->price) * $item['quantity'],2);
         }
         return $total;
     }

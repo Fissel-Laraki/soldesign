@@ -18,9 +18,15 @@ class AdminController extends Controller{
         $this->loadModel('Format');
         
         $products = $this->Product->find(array());
-        $series = $this->Serie->find(array());
-        $categories = $this->Category->find(array());
-        $formats = $this->Format->find(array());
+        $series = $this->Serie->find(array(
+            'conditions' => "name != 'Toutes'"
+        ));
+        $categories = $this->Category->find(array(
+            'conditions' => "name != 'Toutes'"
+        ));
+        $formats = $this->Format->find(array(
+            'conditions' => "name != 'Tous'"
+        ));
         $data['categories'] = $categories;
         $data['series'] = $series;
         $data['products'] = $products;

@@ -7,10 +7,15 @@
         <h1 class="jumbotron-heading">PANIER</h1>
      </div>
 </section>
-<?php debug($this->Session->get('Flash')); ?>
+<?php if ($this->Session->getTotal() ==  0) {
+        $this->Session->setFlash("Votre panier est vide, veuillez ajouter au moins un article");
+        echo '</br>'.$this->Session->flash();
+    }else{
+    
+?>
+
 <div class="container mb-4">
     <div class="row">
-        <?php echo '</br>'.$this->Session->flash() ?>
         <div class="col-12">
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -36,13 +41,15 @@
                         <tr>
                             <td><img src="<?=SOURCE.DS.'img'.DS.$item['product']->img_url?>" /> </td>
                             <td><?=$item['product']->name?> (<?=$item['product']->format?>)</td>
-                            <td class="text-right"><button onclick="changeMinus(<?=$item['product']->pid?>,<?=$item['product']->price?>)">-</button></td>
+                            <td class="text-right"><button  class="btn btn-dark" onclick="changeMinus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-minus" aria-hidden="true"></i>
+</button></td>
                             <td class="text-center" id="item<?=$item['product']->pid?>"><?=$item['quantity']?></td>
-                            <td><button onclick="changePlus(<?=$item['product']->pid?>,<?=$item['product']->price?>)">+</button></td>
+                            <td><button class="btn btn-dark" onclick="changePlus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-plus" aria-hidden="true"></i>
+</button></td>
                             <td class="text-right"><?=$item['product']->price?></td>
                             <td class="text-right"><a class="btn btn-sm btn-danger" href="<?=BASE_URL.DS.'product'.DS.'deleteCart'.DS.$item['product']->pid?>"><i class="fa fa-trash"></i> </a> </td>
                         </tr>
-                        <?php $total = $total + $item['product']->price*$item['quantity'];?>
+                        <?php $total = round($total + round($item['product']->price*$item['quantity'],2),2);?>
                         <?php endforeach;?>
                         <tr>
                             <td></td>
@@ -71,7 +78,7 @@
         </div>
     </div>
 </div>
-
+<?php }?>
 <?php 
     $otherScript = '<script src='.SOURCE.DS.'js'.DS.'product'.DS.'cart.js>'.'</script>';
 ?>

@@ -5,7 +5,7 @@
 <?php title("Commandes") ?>
 <div class="container">
 	<div class="row">
-        <div class="col-10 overflow-auto scroll">
+        <div class="col-10 overflow-auto ">
             <h4>Commandes non traitées</h4>
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">

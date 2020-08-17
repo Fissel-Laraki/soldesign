@@ -26,10 +26,10 @@ function changeMinus(productId,productPrice){
 
         let newQuantity = currentQuantity-1;
         element.html(newQuantity);
-        total.html(parseFloat(total.html())-productPrice);
-        decrementCart();
+        total.html(number_format(parseFloat(total.html())-productPrice,2));
+        //decrementCart();
         let url = BASE_URL+"product/updateCart?id="+productId+"&quantity="+newQuantity;
-        $.get(url,function(){})
+        $.get(url,function(){});
     }
 
 }
@@ -40,10 +40,10 @@ function changePlus(productId,productPrice){
     let currentQuantity =  parseInt(element.html());
     let newQuantity = currentQuantity+1;
     element.html(newQuantity);
-    total.html(parseFloat(total.html())+productPrice);
-    incrementCart();
+    total.html(number_format(parseFloat(total.html())+productPrice,2));
+    //incrementCart();
     let url = BASE_URL+"product/updateCart?id="+productId+"&quantity="+newQuantity;
-    $.get(url,function(){})
+    $.get(url,function(){});
 
 }
 
@@ -54,3 +54,10 @@ $("#emptyCartBtn").click(function(){
     emptyCart();
 })
 
+function number_format(val, decimals){
+    //Parse the value as a float value
+    val = parseFloat(val);
+    //Format the value w/ the specified number
+    //of decimal places and return it.
+    return val.toFixed(decimals);
+}

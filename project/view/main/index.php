@@ -14,22 +14,34 @@
       <!-- Slide One - Set the background image for this slide in the line below -->
       <div class="carousel-item active" style="background-image: url('../webroot/img/main/baltimore_detalle_final.jpg')">
         <div class="carousel-caption d-none d-md-block">
+          <?php 
+          /*
           <h3 class="display-4">First Slide</h3>
           <p class="lead">This is a description for the first slide.</p>
+          */
+          ?>
         </div>
       </div>
       <!-- Slide Two - Set the background image for this slide in the line below -->
       <div class="carousel-item" style="background-image: url('../webroot/img/main/baltimore_final2.jpg')">
         <div class="carousel-caption d-none d-md-block">
+          <?php 
+          /*
           <h3 class="display-4">Second Slide</h3>
           <p class="lead">This is a description for the second slide.</p>
+          */
+          ?>
         </div>
       </div>
       <!-- Slide Three - Set the background image for this slide in the line below -->
       <div class="carousel-item" style="background-image: url('../webroot/img/main/mural_interieur.jpg')">
         <div class="carousel-caption d-none d-md-block">
+          <?php 
+          /*
           <h3 class="display-4">Third Slide</h3>
           <p class="lead">This is a description for the third slide.</p>
+          */
+          ?>
         </div>
       </div>
     </div>
@@ -43,22 +55,21 @@
         </a>
   </div>
 </header>
-
 <!-- Page Content -->
 <section class="py-5">
   <div class="container">
     <!-- Header COLLECTION-->
-    <header class="bg-dark text-center py-3 mb-4" id="collection">
+    <header class="bg-light text-center py-3 mb-4 mt-5" id="collection">
       <div class="container">
-        <h1 class="font-weight-light text-white">NOTRE COLLECTION</h1>
+        <h1 class="font-weight-light text-dark"><u>NOTRE COLLECTION</u></h1>
       </div>
     </header>
     
     <div class="row">
       <?php foreach($categories as $category) : ?>
       <!-- Categories -->
-      <div class="col-xl-4 col-md-6 mb-4">
-        <div class="card border-0 shadow categoryContainer">
+      <div class="col-xl-4 col-md-6 mb-4 mt-5">
+        <div class="card border-0 shadow categoryContainer overflow-hidden ">
           <a href="<?=BASE_URL.DS.'product'.DS.'?categories['.$category->cid.']=on'?>"><img src="<?=SOURCE.DS.'img'.DS.'categories'.DS.$category->img_url?>" class="card-img-top" alt="..."></a>
           <div class="card-body text-center">
             <h5 class="card-title mb-0"><?=$category->name?></h5>
@@ -70,9 +81,9 @@
     </div>
     
     <!-- Header ABOUT-->
-    <header class="bg-dark text-center py-3 mb-4" id="about">
+    <header class="bg-light text-center py-3 mb-4 mt-5" id="about">
       <div class="container">
-        <h1 class="font-weight-light text-white">A PROPOS</h1>
+        <h1 class="font-weight-light text-dark"><u>A PROPOS</u></h1>
       </div>
     </header>
     
@@ -80,8 +91,8 @@
       <div class="container mt-5 my-auto">
           <div class="row align-items-center">
             <div class="col-md-6">
-                <h1 class='text-dark'>Welcome!</h1>
-                <h2>Know More About Us</h2>
+                <h1 class='text-dark'>Bienvenue!</h1>
+                <h2>Qui sommes-nous ? </h2>
                 <hr>
                 <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore etae magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
                 <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
@@ -91,8 +102,10 @@
           </div>
       </div>
     </section>
+
+    <?php /*
     <!-- Header CONTACT-->
-    <header class="bg-dark text-center py-3 mb-4" id="contact">
+    <header class="bg-dark text-center py-3 mb-4 mt-5" id="contact">
       <div class="container">
         <h1 class="font-weight-light text-white">CONTACTEZ-NOUS</h1>
       </div>
@@ -125,6 +138,8 @@
                 </div>
             </form>
 </div>
+*/
+?>
 
 
   </div>

@@ -53,9 +53,9 @@
 
     </head>
     
-    <body class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100 bg-light" >
          <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
                 <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">SOL DESIGN</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,11 +69,11 @@
                             Home
                         </a>
                          <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
-                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
-                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
-                            <a class="dropdown-item" href="<?=BASE_URL.DS.'main'.DS?>#contact" >Nous contacter</a>
+                        <div class="dropdown-menu dropdown-menu-right animate slideIn bg-dark "  aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#contact" >Nous contacter</a>
                       
                         </div>
                     </li>
@@ -87,21 +87,20 @@
                         <a class="nav-link" href="<?= BASE_URL.DS.'user'.DS.'login'?>">Connexion</a>
                     </li>
                     <?php endif;?>
-                    <?php if ($title_layout === "Nos produits"):?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?=BASE_URL.DS.'product'.DS.'cart'?>"><span class="oi oi-cart"></span></a>
-                    </li>
-                    <?php endif; ?>
+
+                    
+                        
+
                 <?php else: ?>
                      <li class="nav-item dropdown active">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Gerer
                         </a>
                          <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
-                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
-                            <a class="dropdown-item"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>
+                        <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
+                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
+                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>
 
                       
                         </div>
@@ -116,14 +115,21 @@
                             Paramètres
                         </a>
                          <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate slideIn" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
                             <?php if (!$admin) : ?>
-                            <a class="dropdown-item" href="<?php echo BASE_URL.DS.'user'.DS.'orders'?>">Mes commandes</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'orders'?>">Mes commandes</a>
                             <? endif;?>
-                            <a class="dropdown-item" href="<?php echo BASE_URL.DS.'user'.DS.'account'?>">Mon compte</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'account'?>">Mon compte</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Déconnexion</a>
+                            <a class="dropdown-item bg-dark text-white" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Déconnexion</a>
                         </div>
+                    </li>
+                <?php endif;?>
+                <?php if (!$admin) : ?>
+                    <li class="nav-item float-right">
+                        <a class="nav-link btn btn-dark btn-lg text-white" href="<?=BASE_URL.DS.'product'.DS.'cart'?>">
+                            <i class="fa fa-shopping-cart" aria-hidden="true" id="totalCart">   <?=$this->Session->getTotal('Cart');?></i>
+                        </a>
                     </li>
                 <?php endif;?>
                 </ul>
@@ -131,13 +137,7 @@
             </div>
         </nav> 
         
-        <?php if (!$admin && $showCart):?>
-        <div style="text-align : right">
-        <a style="margin : 30px;" href="<?=BASE_URL.DS.'product'.DS.'cart'?>" class="btn btn-dark btn-lg">
-            <i class="fa fa-shopping-cart" aria-hidden="true" id="totalCart">   <?=$this->Session->getTotal('Cart');?></i>
-        </a>
-        </div>
-        <?php endif;?>
+       
 
 
 

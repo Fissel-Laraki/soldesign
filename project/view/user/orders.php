@@ -10,9 +10,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-10 overflow-auto scroll">
+        
+        <div class="col-lg-6 col-sm-10 overflow-auto table-responsive " id="orders">
             <table class="table table-bordered table-hover">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                     <th scope="col">#</th>
                     <th scope="col">Date</th>
                     <th scope="col">Total</th>
@@ -24,7 +25,7 @@
                     <tr data-oid=<?=$order->oid?> data-i = <?=$i?> class="classTr">
                         <td><?=$i?></td>
                         <td><?=$order->date?></td>
-                        <td><?=$order->total?></td>
+                        <td><?=$order->total?> €</td>
                         <td><?=$order->status?></td>
                     </tr>
                     <?php $i += 1;?>
@@ -32,7 +33,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-2 d-none" id="tableContainer">
+        <div class="col-lg-6 col-sm-12 d-none table-responsive" id="tableContainer">
+            <h4>Details d'une commande :</h4>
+            <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">Retour aux commandes</button>
             <table class="table table-bordered">
                 <caption id="caption">Détails de la commande numéro </caption>
                 <thead class="table-dark">

@@ -7,7 +7,7 @@ class ProductController extends Controller{
     function index(){
         if (!$this->Session->isAdmin()){
 
-            $perPage = 2;
+            $perPage = 20;
             $this->loadModel('Product');
             $this->loadModel('Category');
             $this->loadModel('Serie');
@@ -66,7 +66,20 @@ class ProductController extends Controller{
                     $data['saleChecked'] = true;
 
                 }
+
+                if(!empty($this->request->data->name)){
+                    $conditions[] = " name like '".$this->request->data->name."%'";
+                    $data["name"] = $this->request->data->name;
+                }
+
+                if(!empty($this->request->data->min) || !empty($this->request->data->max)){
+                    $conditions[] = " (price*(1-promotion/100)) BETWEEN ". $this->request->data->min ." AND " . $this->request->data->max;
+                    $data['minPrice'] = $this->request->data->min;
+                    $data['maxPrice'] = $this->request->data->max;
+                }
             }
+            $conditions[] = " available = true ";
+            $conditions[] = " deleted = false ";
             $conditions = implode(' AND ',$conditions);
             $products = $this->Product->find(array(
                 'conditions' => $conditions,
@@ -79,6 +92,9 @@ class ProductController extends Controller{
             $data['categories'] = $categories;
             $data['series'] = $series;
             $data['products'] = $products;
+            
+
+            
             
             $this->set($data);
         }else{
@@ -128,7 +144,8 @@ class ProductController extends Controller{
             'conditions' => array('pid' => $id)
         ));
         $this->Session->addCart($id,$product);
-        redirect(BASE_URL.DS.'product'.DS);
+        echo json_decode($this->Session->getTotal());
+        die();
     }
 
     function deleteCart($id){
@@ -139,8 +156,6 @@ class ProductController extends Controller{
     
     function updateCart(){
         $this->Session->updateCart($_GET['id'],$_GET['quantity']);
-        debug($_SESSION);
-        die();
     }
 
     function destroyCart()

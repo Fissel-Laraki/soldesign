@@ -14,8 +14,12 @@ require CORE.DS.'includes.php';
 
 new Dispatcher();
 ?>
+<?php
+/*
 <div style="position:fixed;bottom:0;background:red;color:white;">
 <?php 
 echo 'Page generated in '. round(microtime(true) - $begin,5).' seconds';
 ?>
 </div>
+*/
+?>

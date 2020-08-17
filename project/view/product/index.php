@@ -1,18 +1,28 @@
 <?php 
     $title_layout="Nos produits";
     $otherCss = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'product'.DS.'index.css">';
-	$showCart = true;
+    $showCart = true;
+    $minPrice = isset($minPrice)? $minPrice:0;
+    $maxPrice = isset($maxPrice)? $maxPrice:200;
+    $name = isset($name)? $name : "";
 ?>
 <?php if($this->Session->get('Cart') == null) $this->Session->set('Cart',array()); ?>
 <?php
     unset($_GET['page']);
 ?>
-<div class="container-fluid">
+
+<div class="container-fluid mt-5">
     <div class="row">
-        <div class="col-3 myBorder" id="filter">
+        <div class="col-lg-3 myBorder d-none d-lg-block col-sm-12" id="filter">
+            <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">show filters</button>
             <form action="<?=BASE_URL.DS.'product'?>" method="get" id="form">
             
                 <!-- filter -->
+                <label for="name" class="font-weight-bold">Par nom</label>
+                <div>
+                    <input type="text" name="name" class="" value="<?=$name?>"  id="search" placeholder="Cherchez un article...">
+                </div>
+                <hr/>
                 <!--Categories -->
                 <label for="categories" class="font-weight-bold">Categories</label>
                 <?php foreach($categories as $category): ?>
@@ -39,12 +49,28 @@
                     </div>
                 <?php endforeach?>
 
+                
+                <hr/>
+                <label  class="font-weight-bold">Prix</label>
+                <div>
+                    <div>
+                        <label for="min">Min</label>
+                        <input type="range" min="0" max="200" value="<?=$minPrice?>" name="min" id="inputMin">
+                        <div id="priceMin" class="d-inline-block"><?=$minPrice?></div>
+                    </div>
+                    <div>
+                        <label for="max">Max</label>
+                        <input type="range" min="0" max="200" value="<?=$maxPrice?>" name="max" id="inputMax">
+                        <div id="priceMax" class="d-inline-block"><?=$maxPrice?></div>
+                    </div>
+                </div>
+                
+
                 <!-- Sale -->
                 <hr/>
                 <div class="checkbox">
                     <label><input type="checkbox" name="sale" class="icheck" <?php if(isset($saleChecked)) echo "checked"?> > En promotion</label>
                 </div>
-                
 
                 <!-- Min Max price
                 <div data-role="rangeslider">
@@ -59,16 +85,17 @@
         
         </div>
         <!-- products -->
-        <div class="col-8">
+        <div class="col-8  mx-auto " id="products">
+        <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">show filters</button>
             <div class="row">
                 <?php foreach($products as $product): ?>
-                <div class="col-3 col-md-3 col-sm-12 product" data-filter-category="<?=$product->cid?>" data-filter-serie="<?=$product->sid?>">
+                <div class=" col-md-3 col-lg-3 col-sm-12 product justify-content-sm-center " data-filter-category="<?=$product->cid?>" data-filter-serie="<?=$product->sid?>">
                     <div class="product-grid3">
-                        <div class="product-image3">
+                        <div class="product-image3 overflow-hidden">
                             <a href="<?=BASE_URL.DS.'product'.DS.'article'.DS.$product->pid?>">
                                 <img class="pic-1" src="<?=SOURCE.DS.'img'.DS.$product->img_url ?>">
                             </a>
-                            <ul class="social">
+                            <ul class="social d-none d-lg-block">
                                 <li><button class="addCartBtn" onclick="addCart(<?=$product->pid?>)"><i class="fa fa-shopping-cart"></i></button></li>
                                 
                             </ul>
@@ -85,10 +112,15 @@
                                 <?php else : ?>
                                 <?=$product->price?>
                                 <?php endif; ?>
+                                <div >
+                                    <button class="btn btn-dark d-block d-lg-none" style="background-color:black;" onclick="addCart(<?=$product->pid?>)" > <strong> Ajouter au panier </strong></button>
+                                </div>
                             </div>
+                           
                         
                         </div>
                     </div>
+                <hr/>
                 </div>
                 <?php endforeach;?>
             </div>
@@ -99,17 +131,6 @@
 <?php if ($page > 1) :?>
 <!-- Pagination -->
 
-<div class="container">
-
-  <ul class="pagination justify-content-center" >
-        <li class="page-item <?php if($this->request->page == 1 ) echo "disabled" ?>"><a class="page-link" href="<?='?'.http_build_query($_GET).'&page='.($this->request->page - 1)?>">Page Précedente</a></li>
-        <?php for($i = 1; $i <= $page ; $i++): ?>
-            <li class="page-item <?php if($this->request->page == $i) echo "active";?>"><a class="page-link"   href="<?='?'.http_build_query($_GET).'&page='.$i ?>"><?=$i?></a></li>
-        <?php endfor;?>
-        <li class="page-item <?php if($this->request->page == $page ) echo "disabled" ?>"><a class="page-link"  href="<?='?'.http_build_query($_GET).'&page='.($this->request->page + 1)?>">Page Suivante</a></li>
-  </ul>
-
-</div>
 
 <?php endif ?>
 
