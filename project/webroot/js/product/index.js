@@ -27,7 +27,7 @@ function changeCart(i)
 {
     let current = parseInt(cart.html());
     if (i != current){
-        cart.html(i+1);
+        cart.html(" "+i);
     }
 }
 

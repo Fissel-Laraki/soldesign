@@ -4,9 +4,9 @@
 	$showCart = true;
 ?>
 
-<div class=" centered">
+<div class="centered mx-auto ">
 	<div class="row">
-		<aside class="col-sm-5 border-right">
+		<aside class="col-sm-7 border-right">
 			<article class="gallery-wrap">
 				<div class="img-big-wrap">
 					<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -38,33 +38,23 @@
 			</article>
 			<!-- gallery-wrap .end// -->
 		</aside>
-		<aside class="col-sm-7">
+		<aside class="col-sm-5">
 			<article class="card-body p-5">
 				<h3 class="title mb-3"><?=strtoupper($product->name)?></h3>
 				<p class="price-detail-wrap">
-					<span class="price h3 text-warning">
+					<span class="price h3">
 						<span class="currency">€</span>
 						<span class="num"><?=$product->price?></span>
 					</span>
 					<span>par ...</span>
 				</p>
-				<!-- price-detail-wrap .// -->
-				<!--<dl class="item-property">
-					<dt>
-						Description
-					</dt>
-					<dd>
-						<p>
-							Here goes description consectetur adipisicing elit, sed do eiusmodtempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco 
-						</p>
-					</dd>
-				</dl>-->
+			
 				<dl class="param param-feature">
 					<dt>
-						Format
+						Dimensions
 					</dt>
 					<dd>
-						<?=$product->format?>
+						<?=$product->format?> cm²
 					</dd>
 				</dl>
 				<!-- item-property-hor .// -->
@@ -79,7 +69,7 @@
 				<!-- item-property-hor .// -->
 				<dl class="param param-feature">
 					<dt>
-						Catégorie
+						Déstination
 					</dt>
 					<dd>
 						<?=$product->category?>
@@ -92,8 +82,59 @@
 			</article>
 			<!-- card-body.// -->
 		</aside>
+		
 		<!-- col.// -->
 	</div>
+	<!-- row.// -->
+	<div class="row">
+		<h4>Caracteristiques</h4>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+				<th scope="col"></th>
+				<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">Epaisseur</td>
+					<td><?=$product->thickness?> mm</td>
+				</tr>
+				<tr>
+					<th scope="row">Couleur</td>
+					<td><?=$product->color?></td>
+				</tr>
+				<tr>
+					<th scope="row">Matiere</td>
+					<td><?=$product->matter?></td>
+				</tr>
+				<tr>
+					<th scope="row">Bord</td>
+					<td><?=$product->edge?></td>
+				</tr>
+				<tr>
+					<th scope="row">Type de pose</td>
+					<td><?=$product->putType?></td>
+				</tr>
+				<tr>
+					<th scope="row">Support</td>
+					<td><?=$product->support?></td>
+				</tr>
+				<tr>
+					<th scope="row">Conditionnement</td>
+					<td><?=$product->conditioning?> m²/colis</td>
+				</tr>
+				<tr>
+					<th scope="row">Norme</td>
+					<td><?=$product->standard?></td>
+				</tr>
+				<tr>
+					<th scope="row">Résistance au gel</td>
+					<td><?=$product->frostRes?></td>
+				</tr>
+			</tbody>
+		</table>
+    </div>
 	<!-- row.// -->
 </div>
 <!-- card.// -->

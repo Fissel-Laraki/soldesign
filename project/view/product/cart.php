@@ -1,22 +1,18 @@
 <?php 
     $title_layout="Panier";
     $otherCss[] = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'product'.DS.'cart.css">';
+    
 ?>
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">PANIER</h1>
      </div>
 </section>
-<?php if ($this->Session->getTotal() ==  0) {
-        $this->Session->setFlash("Votre panier est vide, veuillez ajouter au moins un article");
-        echo '</br>'.$this->Session->flash();
-    }else{
-    
-?>
 
 <div class="container mb-4">
     <div class="row">
         <div class="col-12">
+            <?php  echo $this->Session->flash(); ?>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -72,13 +68,12 @@
                     <a class="btn btn-block btn-light " href="<?=BASE_URL.DS.'product'?>" role="button">Continuez vos achats</a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <a class="btn btn-lg btn-block btn-success text-uppercase" href="<?=BASE_URL.DS.'product'.DS.'payment'?>">Passer au paiement</a>
+                    <a class="btn btn-lg btn-block btn-success text-uppercase <?php if ($empty) echo 'disabled'?>" href="<?=BASE_URL.DS.'product'.DS.'payment'?>" id="payBtn">Passer au paiement</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<?php }?>
 <?php 
     $otherScript = '<script src='.SOURCE.DS.'js'.DS.'product'.DS.'cart.js>'.'</script>';
 ?>

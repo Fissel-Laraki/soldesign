@@ -100,17 +100,17 @@
                                 
                             </ul>
                             <?php if($product->promotion > 0 ) : ?>
-                            <span class="product-discount-label"><?=$product->promotion?>%  </span>
+                            <span class="product-discount-label"><i class="fa fa-star" aria-hidden="true"></i> <?=$product->promotion?>%</span>
                             <?php endif; ?>
                         </div>
                         <div class="product-content">
                             <h3 class="title"><a href="#"><?=$product->name?> <?=$product->format?></a></h3>
                             <div class="price">
                                 <?php if($product->promotion > 0) :?>
-                                €<?=$product->price * (1.0-($product->promotion/100))?>
-                                <span>€<?=$product->price?></span>
+                                <?=$product->price * (1.0-($product->promotion/100))?>€
+                                <span><?=$product->price?>€</span>
                                 <?php else : ?>
-                                <?=$product->price?>
+                                <?=$product->price?>€
                                 <?php endif; ?>
                                 <div >
                                     <button class="btn btn-dark d-block d-lg-none" style="background-color:black;" onclick="addCart(<?=$product->pid?>)" > <strong> Ajouter au panier </strong></button>
@@ -128,11 +128,24 @@
     </div>
 </div>
 
+
 <?php if ($page > 1) :?>
 <!-- Pagination -->
 
+<div class="container">
 
-<?php endif ?>
+  <ul class="pagination justify-content-center" >
+        <li class="page-item <?php if($this->request->page == 1 ) echo "disabled" ?>"><a class="page-link" href="<?='?'.http_build_query($_GET).'&page='.($this->request->page - 1)?>">Page Précedente</a></li>
+        <?php for($i = 1; $i <= $page ; $i++): ?>
+            <li class="page-item <?php if($this->request->page == $i) echo "active";?>"><a class="page-link"   href="<?='?'.http_build_query($_GET).'&page='.$i ?>"><?=$i?></a></li>
+        <?php endfor;?>
+        <li class="page-item <?php if($this->request->page == $page ) echo "disabled" ?>"><a class="page-link"  href="<?='?'.http_build_query($_GET).'&page='.($this->request->page + 1)?>">Page Suivante</a></li>
+  </ul>
+
+</div>
+<?php endif;?>
+
+
 
 <?php 
     $otherScript = '<script src='.SOURCE.DS.'js'.DS.'product'.DS.'index.js>'.'</script>';

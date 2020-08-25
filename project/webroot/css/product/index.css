@@ -40,8 +40,9 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
     background-color:#343a40;
 }
 
-li.active{
-    background-color:#343a40 ;
+.pagination .active a{
+    background-color:#343a40  !important;
+    border: none !important;
 }
 
 .pic-1{

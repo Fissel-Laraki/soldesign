@@ -8,16 +8,16 @@ class AdminController extends Controller{
 
     function articles(){
 
+        $perPage = 20;
         $this->loadModel('Product');
-
         $this->loadModel('Serie');
-
         $this->loadModel('Category');
-
-
         $this->loadModel('Format');
+        $this->Product->primaryKey = "pid";
         
-        $products = $this->Product->find(array());
+        $products = $this->Product->find(array(
+            'limit' => ($perPage*($this->request->page-1)).','.$perPage
+        ));
         $series = $this->Serie->find(array(
             'conditions' => "name != 'Toutes'"
         ));
@@ -27,6 +27,8 @@ class AdminController extends Controller{
         $formats = $this->Format->find(array(
             'conditions' => "name != 'Tous'"
         ));
+        $data['total'] = $this->Product->findCount();
+        $data['page'] = ceil($data['total']/$perPage);
         $data['categories'] = $categories;
         $data['series'] = $series;
         $data['products'] = $products;
@@ -56,9 +58,22 @@ class AdminController extends Controller{
         $data = $this->request->data;
         $files = diverse_array($_FILES['files']);
         $data->img_url = $_FILES['file']['name'];
-    
+        
+        
 
+        $serie = $this->Serie->findFirst(array(
+            'conditions' => array('name' => $data->serie)
+        ));
 
+        $category = $this->Category->findFirst(array(
+            'conditions' => array('name' => $data->category)
+        ));
+        
+        
+        $data->sid = $data->serie;
+        $data->cid = $data->category;
+        unset($data->serie);
+        unset($data->category);
 
         $this->Product->insert($data);
 
@@ -83,6 +98,7 @@ class AdminController extends Controller{
             $this->loadModel('Media');
             $this->loadModel('Serie');
             $this->loadModel('Category');
+            $this->loadModel('Format');
 
             $series = $this->Serie->find(array());
             $categories = $this->Category->find(array());
@@ -103,6 +119,9 @@ class AdminController extends Controller{
                 'conditions' => array('aid' => $product->pid)
             ));
 
+            $formats = $this->Format->find(array(
+                'conditions' => "name != 'Tous'"
+            ));
             
             
             $data['categories'] = $categories;
@@ -111,6 +130,7 @@ class AdminController extends Controller{
             $data['current_serie'] = $current_serie;
             $data['current_category'] = $current_category;
             $data['images'] = $images;
+            $data['formats'] = $formats;
 
             $this->set($data);
         }else{
@@ -125,20 +145,14 @@ class AdminController extends Controller{
 
             $data = $this->request->data;
 
-            $sid = $this->Serie->getId(array(
-                'conditions' => array('name' => $data->serie)
-            ));
-            $cid = $this->Category->getId(array(
-                'conditions' => array('name' => $data->category)
-            ));
-
             $product = $this->Product->findFirst(array(
                 'conditions' => array('pid'=>$id)
             ));
 
 
-            $data->sid = $sid;
-            $data->cid = $cid;
+            $dest = WEBROOT.DS.'img/';
+            $data->sid = $data->serie;
+            $data->cid = $data->category;
             if ($_FILES['file']['name']){
                 unlink(SOURCE.DS.'img'.DS.$product->img_url);
                 $data->img_url = $_FILES['file']['name'];

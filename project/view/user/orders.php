@@ -10,7 +10,11 @@
 
 <div class="container">
     <div class="row">
-        
+        <?php if (empty($orders)){
+            $this->Session->setFlash("Vous n'avez encore passez aucune commande");
+            echo $this->Session->flash();
+        }else{
+        ?>
         <div class="col-lg-6 col-sm-10 overflow-auto table-responsive " id="orders">
             <table class="table table-bordered table-hover">
                 <thead class="thead-light">
@@ -50,6 +54,7 @@
                 </tbody>
             </table>
         </div>
+        <?php }?>
     </div>
 </div>
 

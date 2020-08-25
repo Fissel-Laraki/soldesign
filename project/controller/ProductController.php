@@ -128,6 +128,7 @@ class ProductController extends Controller{
                 'conditions' => array('aid' => $id)
             ));
 
+            
             $this->set($data);
         }else{
             redirect(BASE_URL.DS.'admin'.DS);
@@ -135,7 +136,13 @@ class ProductController extends Controller{
     }
 
     function cart(){
-
+        if ($this->Session->getTotalPrice() == 0){
+            $this->Session->setFlash("Veuillez ajouter au moins un article");
+            $this->set('empty',true);
+        }else{
+            $this->set('empty',false);
+        }
+        
     }
 
     function addCart($id){
@@ -168,7 +175,7 @@ class ProductController extends Controller{
             $this->Session->setFlash("Veuillez vous connecter afin de procéder au paiement");
             redirect(BASE_URL.DS.'user'.DS.'login');
         }else{
-            if ($this->Session->getTotalPrice() > 0){
+            if (/*$this->Session->getTotalPrice()>0*/ true){
 
                 $this->loadModel('Orders');
                 $this->loadModel('Lnk_orders_product');
@@ -182,6 +189,7 @@ class ProductController extends Controller{
                     $this->Session->setFlash("Votre commande est bien passée","success");
                 }else{
                     $this->Session->setFlash("Votre commande a échoué");
+                    redirect(BASE_URL.DS.'product'.DS.'cart');
                 }
             
             }else{

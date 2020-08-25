@@ -5,12 +5,16 @@ const BASE_URL = "/soldesign/project/";
 let cart = $("#totalCart");
 
 function addCart(id){
-    $.get(BASE_URL+"product/addCart/"+id);
-    incrementCart();
+    current = cart.html();
+    $.get(BASE_URL+"product/addCart/"+id,(data)=>{
+        if(parseInt(current) < parseInt(data)){
+            incrementCart();
+        }
+    });
 }
 
 function incrementCart()
 {
-    let current = parseInt(cart.html());
-    cart.html(current+1);
+    let newV = parseInt(cart.html()) +1 ;
+    cart.html(" "+newV);
 }

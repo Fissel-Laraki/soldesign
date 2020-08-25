@@ -26,6 +26,8 @@ class Session{
             $res = '<div class="alert alert-'.$_SESSION['Flash']['type'].'" role="alert">'.$_SESSION['Flash']['message'].'</div>';
             unset($_SESSION['Flash']);
             return $res;
+        }else{
+            return "";
         }
     }
 

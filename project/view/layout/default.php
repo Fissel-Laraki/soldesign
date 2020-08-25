@@ -57,7 +57,9 @@
          <!-- Navigation -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">SOL DESIGN</a>
+                <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">
+                    SOLS DESIGN
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -73,7 +75,6 @@
                             <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
                             <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
                             <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
-                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#contact" >Nous contacter</a>
                       
                         </div>
                     </li>

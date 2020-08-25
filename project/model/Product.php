@@ -3,7 +3,13 @@
 class Product extends Model{
    
     public function insert($data){
-       $sql = 'INSERT INTO '. $this->table . '(name,format,price,promotion,sid,cid,img_url) values(';
+       $keyz = array_keys((array)$data);
+       $keys = array();
+       $sql = 'INSERT INTO '. $this->table . '(';
+       foreach($keyz as $key){
+           $keys[] = $key;
+       }
+       $sql .= implode(',',$keys).') values(';
        $values = array();
        foreach($data as $k=>$v){
            if(!is_numeric($v)){

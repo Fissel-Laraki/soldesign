@@ -24,3 +24,17 @@
 .input-file {
     display: none;
 }
+
+.page-link{
+    color : black;
+}
+.page-link:hover
+{
+    color : white;
+    background-color:#343a40;
+}
+
+.pagination .active a{
+    background-color:#343a40  !important;
+    border: none !important;
+}

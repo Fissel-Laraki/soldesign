@@ -86,7 +86,7 @@ class Model{
         return current($this->find($req));
     }
 
-    public function findCount($conditions){
+    public function findCount($conditions=array()){
         $res = $this->findFirst(array(
             'fields' => 'COUNT('.$this->primaryKey.') as count',
             'conditions' => $conditions
@@ -133,6 +133,9 @@ class Model{
         if (is_array($newC)){
             if(!empty($newC)){
                 foreach($newC as $k => $v){
+                    if(!is_numeric($v)){
+                        $v = $this->db->quote($v);
+                    }    
                     $cond[] = "$k = $v"; 
                 }
                 $sql .= implode(' , ',$cond);
@@ -142,6 +145,7 @@ class Model{
             $sql .= $newC;
         }
         $sql .= " WHERE " . $target;
+        echo $sql;
         $pre = $this->db->prepare($sql);
         $pre->execute();
 
