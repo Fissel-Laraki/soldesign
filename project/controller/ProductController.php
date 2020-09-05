@@ -80,6 +80,7 @@ class ProductController extends Controller{
             }
             $conditions[] = " available = true ";
             $conditions[] = " deleted = false ";
+            $conditions[] = "tid = 3";
             $conditions = implode(' AND ',$conditions);
             $products = $this->Product->find(array(
                 'conditions' => $conditions,
@@ -109,6 +110,9 @@ class ProductController extends Controller{
             $this->loadModel('Product');
             $this->loadModel('Category');
             $this->loadModel('Serie');
+            $this->loadModel('Lnk_product_characteristic');
+
+
             $this->Product->primaryKey = 'pid';
             $this->Media->primaryKey = 'mid';
 
@@ -128,6 +132,8 @@ class ProductController extends Controller{
                 'conditions' => array('aid' => $id)
             ));
 
+            $data['characteristics'] = $this->Lnk_product_characteristic->findCharacteristics($id);
+
             
             $this->set($data);
         }else{
@@ -137,7 +143,7 @@ class ProductController extends Controller{
 
     function cart(){
         if ($this->Session->getTotalPrice() == 0){
-            $this->Session->setFlash("Veuillez ajouter au moins un article");
+            $this->Session->setFlash("Veuillez ajouter au moins un article","warning");
             $this->set('empty',true);
         }else{
             $this->set('empty',false);
@@ -145,12 +151,16 @@ class ProductController extends Controller{
         
     }
 
-    function addCart($id){
+    function addCart($id,$quantity=NULL){
         $this->loadModel('Product');
         $product = $this->Product->findFirst(array(
             'conditions' => array('pid' => $id)
         ));
-        $this->Session->addCart($id,$product);
+        if (isset($quantity)){
+            $this->Session->addCart($id,$product,$quantity);
+        }else{
+            $this->Session->addCart($id,$product);
+        }
         echo json_decode($this->Session->getTotal());
         die();
     }
@@ -177,6 +187,7 @@ class ProductController extends Controller{
         }else{
             if (/*$this->Session->getTotalPrice()>0*/ true){
 
+                
                 $this->loadModel('Orders');
                 $this->loadModel('Lnk_orders_product');
                 $this->Orders->db->beginTransaction();

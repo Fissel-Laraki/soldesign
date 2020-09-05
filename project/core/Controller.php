@@ -44,8 +44,6 @@ class Controller{
         require_once($file);
         if(!isset($this->$name)){
             $this->$name = new $name;
-        }else{
-            echo "pas chargé";
         }
     }
 

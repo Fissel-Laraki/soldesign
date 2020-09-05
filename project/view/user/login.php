@@ -4,15 +4,15 @@
 ?>
 
 <!-- Connexion Form -->
-<div id="login">
-        <div class="container my-5">
+<div id="login" class="h-100">
+        <div class="container-flex my-5 mx-5 ">
             <div id="login-row" class="row justify-content-center align-items-center">
 
               <div class="col-6 w-100 h-100 my-2">
-                <img src="<?=SOURCE.DS.'img'.DS.'logos'.DS.'LOGOnoir.jpg'?>" class="w-100 h-100">
+                <img src="<?=SOURCE.DS.'img'.DS.'logos'.DS.'logonoir.png'?>" class="w-100 h-100">
               </div>
                 
-              <div id="login-column" class="col-6 border">
+              <div id="login-column" class="col-3 border">
                     <?php
                         
                         echo '</br>'.$this->Session->flash() 
@@ -26,7 +26,7 @@
                         <h3 class="text-center">Connexion</h3>
                         <div class="form-group">
                             <label>Adresse mail</label>
-                            <input type="email" name="email" class="form-control"  aria-describedby="emailHelp">
+                            <input type="email" name="email" value="<?=$email?>" class="form-control"  aria-describedby="emailHelp">
                         </div>
                                     
                         <div class="form-group">
@@ -35,8 +35,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="remember-me"><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                            <input type="submit" name="submit" class="btn btn-dark btn-md" value="submit">
+                            <input type="submit" name="submit" class="btn btn-outline-dark btn-md" value="Connexion">
                         </div>
                         <div id="register-link" class="text-right">
                             <a href="<?php echo BASE_URL.DS.'user'.DS.'signin' ?>">Inscrivez-vous</a>

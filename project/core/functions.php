@@ -32,3 +32,11 @@ function title($text){
         </div>
     </section>";
 }
+function activate($title,$text){
+    
+    if($title === $text){
+        echo "active";
+    }else{
+        echo "";
+    }
+}

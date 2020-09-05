@@ -9,7 +9,7 @@
      </div>
 </section>
 
-<div class="container mb-4">
+<div class="container mb-4 h-100">
     <div class="row">
         <div class="col-12">
             <?php  echo $this->Session->flash(); ?>
@@ -37,13 +37,13 @@
                         <tr>
                             <td><img src="<?=SOURCE.DS.'img'.DS.$item['product']->img_url?>" /> </td>
                             <td><?=$item['product']->name?> (<?=$item['product']->format?>)</td>
-                            <td class="text-right"><button  class="btn btn-dark" onclick="changeMinus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-minus" aria-hidden="true"></i>
+                            <td class="text-right"><button  class="btn btn-outline-primary border-0" onclick="changeMinus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-minus" aria-hidden="true"></i>
 </button></td>
                             <td class="text-center" id="item<?=$item['product']->pid?>"><?=$item['quantity']?></td>
-                            <td><button class="btn btn-dark" onclick="changePlus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-plus" aria-hidden="true"></i>
+                            <td><button class="btn btn-outline-primary border-0" onclick="changePlus(<?=$item['product']->pid?>,<?=$item['product']->price?>)"><i class="fa fa-plus" aria-hidden="true"></i>
 </button></td>
                             <td class="text-right"><?=$item['product']->price?></td>
-                            <td class="text-right"><a class="btn btn-sm btn-danger" href="<?=BASE_URL.DS.'product'.DS.'deleteCart'.DS.$item['product']->pid?>"><i class="fa fa-trash"></i> </a> </td>
+                            <td class="text-right"><a class="btn btn-sm btn-outline-danger" href="<?=BASE_URL.DS.'product'.DS.'deleteCart'.DS.$item['product']->pid?>"><i class="fa fa-trash"></i> </a> </td>
                         </tr>
                         <?php $total = round($total + round($item['product']->price*$item['quantity'],2),2);?>
                         <?php endforeach;?>
@@ -64,11 +64,11 @@
         <div class="col mb-2">
             <div class="row">
                 <div class="col-sm-12  col-md-6">
-                    <button class="btn btn-block btn-danger btn-lg" id="emptyCartBtn"  role="button">Vider le panier</button>
-                    <a class="btn btn-block btn-light " href="<?=BASE_URL.DS.'product'?>" role="button">Continuez vos achats</a>
+                    <button class="btn btn-block btn-outline-secondary btn-lg" id="emptyCartBtn"  role="button">Vider le panier</button>
+                    <a class="btn btn-block btn-outline-secondary " href="<?=BASE_URL.DS.'product'?>" role="button">Continuez vos achats</a>
                 </div>
                 <div class="col-sm-12 col-md-6 text-right">
-                    <a class="btn btn-lg btn-block btn-success text-uppercase <?php if ($empty) echo 'disabled'?>" href="<?=BASE_URL.DS.'product'.DS.'payment'?>" id="payBtn">Passer au paiement</a>
+                    <a class="btn btn-lg btn-block btn-outline-success text-uppercase <?php if ($empty) echo 'disabled'?>" href="<?=BASE_URL.DS.'product'.DS.'payment'?>" id="payBtn">Passer au paiement</a>
                 </div>
             </div>
         </div>

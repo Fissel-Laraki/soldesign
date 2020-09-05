@@ -6,12 +6,12 @@
 <div class="container border mb-5 px-5 py-5">
     <div class="row" id="container">
         
-        <div class="col-4 mb-3">
+        <div class="col-4">
             <div>
-                <img src="#">
+                <img src="<?=SOURCE.DS.'img'.DS.'main'.DS.'user.svg'?>">
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-7 my-5">
             <div class="mt-3">
                 <p class="my-2"><strong>Nom </strong>: <?=$user->name?> </p>
                 <p class="my-2"><strong>Prenom </strong>: <?=$user->firstname?></p>

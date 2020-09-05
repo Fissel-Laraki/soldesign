@@ -3,7 +3,12 @@
     $admin = $this->Session->isAdmin();     
     $title_layout = isset($title_layout) ? $title_layout : 'Page';
     $showCart = isset($showCart)? $showCart : false;
-   
+    $this->loadModel('Category');
+    $this->loadModel('Accessory');
+    $this->loadModel('Consumable');
+    $categs = $this->Category->find(array('conditions' => "name != 'Toutes'"));
+    $accessories = $this->Accessory->find(array());
+    $consumables = $this->Consumable->find(array());
     
     
 ?>
@@ -12,6 +17,7 @@
     <head>
         <title><?=$title_layout?></title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet"> 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
         <meta charset="utf-8">
         
@@ -55,96 +61,131 @@
     
     <body class="d-flex flex-column h-100 bg-light" >
          <!-- Navigation -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
             <div class="container">
-                <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">
-                    SOLS DESIGN
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
-                <?php if(!$admin) : ?>
-                    <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Home
-                        </a>
-                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate slideIn bg-dark "  aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
-                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
-                            <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
-                      
-                        </div>
-                    </li>
-                   
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?=BASE_URL.DS.'product'.DS?>">Nos produits</a>
-                    </li>
-                   
-                    <?php if (!$logged) :?>
-                    <li  class="nav-item">
-                        <a class="nav-link" href="<?= BASE_URL.DS.'user'.DS.'login'?>">Connexion</a>
-                    </li>
-                    <?php endif;?>
+                    <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">
+                        SOLS DESIGN
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarResponsive">
+                        <ul class="navbar-nav ml-auto">
+                            <?php if(!$admin) : ?>
+                                <li class="nav-item dropdown <?php activate($title_layout,'Home') ?>">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Home
+                                    </a>
+                                    <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                                    <div class="dropdown-menu dropdown-menu-right animate slideIn bg-dark "  aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>">Accueil</a>
+                                        <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#collection" >Notre Collection</a>
+                                        <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
+                                
+                                    </div>
+                                </li>
+                            
+                                <li class="nav-item dropdown <?php activate($title_layout,'Nos produits') ?>">
+                                    <a class="nav-link dropdown-toggle" href="#" id="showProducts" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nos produits</a>
+                                    <div class="dropdown-menu dropdown-menu-right animate slideIn bg-dark  "  aria-labelledby="navbarDropdown">
+                                        <table class="table ">
+                                            <thead  class="thead-dark">
+                                                <th scope="row" class="tableTitle">Carrelage</th>
+                                                <th scope="row" class="tableTitle">Accessoires</th>
+                                                <th scope="row" class="tableTitle">Consommables</th>
+                                            </thead>
 
-                    
+                                            <tbody>
+                                                <td>
+                                                    <ul>
+                                                        <?php foreach($categs as $categ):?>
+                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS.'?categories['.$categ->cid.']=on'?>"><?=$categ->name?></a></li>
+                                                        <?php endforeach;?>
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <ul>
+                                                        <?php foreach($accessories as $accessory):?>
+                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS?>"><?=ucfirst($accessory->name)?></a></li>
+                                                        <?php endforeach;?>
+                                                    
+                                                    </ul>
+                                                </td>
+                                                <td>
+                                                    <ul>
+                                                        <?php foreach($consumables as $consumable):?>
+                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS?>"><?=ucfirst($consumable->name)?></a></li>
+                                                        <?php endforeach;?>
+                                                    
+                                                    </ul>
+                                                </td>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </li>
                         
+                                <?php if (!$logged) :?>
+                                <li  class="nav-item <?php activate($title_layout,'Connexion') ?>">
+                                    <a class="nav-link" href="<?= BASE_URL.DS.'user'.DS.'login'?>">Connexion</a>
+                                </li>
+                                <?php endif;?>
 
-                <?php else: ?>
-                     <li class="nav-item dropdown active">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Gerer
-                        </a>
-                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
-                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
-                            <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>
+                        
+                            
 
-                      
-                        </div>
-                        <li class="nav-item">
-                            <a class="nav-link" href="<?=BASE_URL.DS.'admin'.DS.'orders'?>">Commandes</a>
-                        </li>
-                    </li>
-                <?php endif;?>
-                <?php if($logged) : ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Paramètres
-                        </a>
-                         <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
-                        <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
+                            <?php else: ?>
+                                <li class="nav-item dropdown  <?php activate($title_layout,'Gerer') ?>">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Gerer
+                                    </a>
+                                    <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                                    <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'other'?>">Accessoires</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>
+
+                                
+                                    </div>
+                                </li>
+                                    <li class="nav-item <?php activate($title_layout,'Commandes') ?>">
+                                        <a class="nav-link" href="<?=BASE_URL.DS.'admin'.DS.'orders'?>">Commandes</a>
+                                    </li>
+                            <?php endif;?>
+                            <?php if($logged) : ?>
+                                <li class="nav-item dropdown <?php activate($title_layout,'Paramètres') ?>">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Paramètres
+                                    </a>
+                                    <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
+                                    <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
+                                        <?php if (!$admin) : ?>
+                                        <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'orders'?>">Mes commandes</a>
+                                        <? endif;?>
+                                        <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'account'?>">Mon compte</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item bg-dark text-white" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Déconnexion</a>
+                                    </div>
+                                </li>
+                            <?php endif;?>
                             <?php if (!$admin) : ?>
-                            <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'orders'?>">Mes commandes</a>
-                            <? endif;?>
-                            <a class="dropdown-item bg-dark text-white" href="<?php echo BASE_URL.DS.'user'.DS.'account'?>">Mon compte</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item bg-dark text-white" href="<?= BASE_URL.DS.'user'.DS.'logout'?>">Déconnexion</a>
-                        </div>
-                    </li>
-                <?php endif;?>
-                <?php if (!$admin) : ?>
-                    <li class="nav-item float-right">
-                        <a class="nav-link btn btn-dark btn-lg text-white" href="<?=BASE_URL.DS.'product'.DS.'cart'?>">
-                            <i class="fa fa-shopping-cart" aria-hidden="true" id="totalCart">   <?=$this->Session->getTotal('Cart');?></i>
-                        </a>
-                    </li>
-                <?php endif;?>
-                </ul>
+                                <li class="nav-item float-right <?php activate($title_layout,'Panier') ?>">
+                                    <a class="nav-link btn btn-dark btn-lg text-white mx-5 border-0" style="background-color : black;" href="<?=BASE_URL.DS.'product'.DS.'cart'?>">
+                                        <i class="fa fa-shopping-cart" aria-hidden="true" id="totalCart">   <?=$this->Session->getTotal('Cart');?></i>
+                                    </a>
+                                </li>
+                            <?php endif;?>
+                        </ul>
                 </div>
             </div>
         </nav> 
-        
        
 
 
 
         <?= $layoutContent?>
 
-        <footer class="footer mt-auto py-3 bg-dark text-white">
+        <footer class="footer sticky-bottom mt-5 py-3 bg-dark text-white">
             <div class="container text-center">
                 <small>Copyright &copy; Your Website</small>
             </div>

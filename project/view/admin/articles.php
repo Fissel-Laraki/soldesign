@@ -4,7 +4,9 @@
 ?>
 
 <?php title("Gestion des articles") ?>
-
+<?php
+    unset($_GET['page']);
+?>
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
@@ -26,6 +28,9 @@
 						<th>
 							Promotion
 						</th>
+						<th>
+              Type
+						</th>
 
 						<th>
 						
@@ -45,22 +50,32 @@
 								<?=$product->format?>
 							</td>
 							<td>
-								<?=$product->price?>
+                <?=$product->price?>
 							</td>
 							<td>
 								-<?=$product->promotion?>%
 							</td>
+              <td>
+                <?=$typeRef[$product->tid]?>
+              </td>
 							<td>
 								<p data-placement="top" data-toggle="tooltip" title="Edit">
                   <a href="<?= BASE_URL.DS.'admin'.DS.'editArticle'.DS.$product->pid?>"><i class="fa fa-edit"></i></a>
 								</p>
 							</td>
 							<td>
+              <?php if($product->deleted) : ?>
 								<p data-placement="top" data-toggle="tooltip" title="Delete">
-                  <a href="<?= BASE_URL.DS.'admin'.DS.'deleteArticle'.DS.$product->pid?>" class="trash"><i class="fa fa-trash"></i></a>
+                  <a href="<?= BASE_URL.DS.'admin'.DS.'restoreArticle'.DS.$product->pid.DS.$this->request->page?>" class="undo"><i class="fa fa-undo" aria-hidden="true"></i></a>
                 </p>
+              <?php else : ?>
+								<p data-placement="top" data-toggle="tooltip" title="Delete">
+                  <a href="<?= BASE_URL.DS.'admin'.DS.'deleteArticle'.DS.$product->pid.DS.$this->request->page?>" class="trash"><i class="fa fa-trash"></i></a>
+                </p>
+              <?php endif; ?>
+              
               </td>
-        </tr>
+            </tr>
             <?php endforeach;?>
 						
 					</tbody>
@@ -82,8 +97,8 @@
 
 
 <form method="POST" action="<?=BASE_URL.DS.'admin'.DS.'addArticle'?>" enctype="multipart/form-data" id="addForm" style="margin-bottom:100px">
-  <div class="container w-100">
-    <div class="row">
+  <div class="container w-100 h-100">
+    <div class="row" id="row">
         <div class="col">
 
           <div class="form-group">
@@ -116,57 +131,18 @@
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-        <div class="col">
-
-          <div class="form-group">
-            <label for="thickness">Epaisseur</label>
-            <input type="text" name="thickness" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="conditioning">Conditionnement</label>
-            <input type="text" name="conditioning" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="matter">Matière</label>
-            <input type="text" name="matter" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="color">Couleur</label>
-            <input type="text" name="color" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="edge">Bord</label>
-            <input type="text" name="edge" class="form-control" >
-          </div>
-
-        </div>
 
         <div class="col">
 
           <div class="form-group">
-            <label for="putType">Type de pose</label>
-            <input type="text" name="putType" class="form-control" >
+                <label>Type de produit</label>
+                <select name="tid" class="form-control">
+                  <?php foreach($types as $type) : ?>
+                    <option value="<?=$type->tid?>"><?=$type->name?></option>
+                  <?php endforeach;?>
+                </select>
           </div>
-
-          <div class="form-group">
-            <label for="support">Support</label>
-            <input type="text" name="support" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="standard">Norme</label>
-            <input type="text" name="standard" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="frostRes">Résistance au gél</label>
-            <input type="text" name="frostRes" class="form-control" >
-          </div>
-
+          
           <div class="form-group">
             <label for="exampleFormControlSelect1">Category</label>
             <select name="category" class="form-control" >
@@ -175,10 +151,18 @@
               <?php endforeach; ?>
             </select>
           </div>
-        
-        </div>
-        <div class="col">
 
+          <div class="form-group">
+            <label for="addCarac">Ajouter une caractéristique</label>
+            <button type="button" id="addCharac" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button>
+          </div>
+          <div class="form-group">
+            <select id="selection">
+                <?php foreach ($characteristics as $characteristic) : ?>
+                    <option value="<?=$characteristic->chid?>"><?=$characteristic->name?></option>
+                <?php endforeach ?>
+            </select>
+          </div>
           <div class="form-group">
             <label for="file" class="label-file">Ajouter une photo principale </label>
             <input type="file" name="file" id="file" class="form-control input-file" onchange="loadFile(event)" >

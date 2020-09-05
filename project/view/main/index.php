@@ -1,7 +1,7 @@
 
 <?php 
     $otherCss = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'main'.DS.'index.css">';
-    $title_layout = "Accueil";
+    $title_layout = "Home";
 ?>
 
 
@@ -89,6 +89,10 @@
     
     <section class="about-us py-4 " id="about-us">
       <div class="container mt-5 my-auto">
+          <div class="social row justify-content-center my-5">
+            <a href="https://www.instagram.com/sols_design/" target="_blank" title="Notre page Instagram" class="btn social-item" ><i class="fa fa-instagram fa-4x" aria-hidden="true"></i></a>
+            <a href="https://fr-fr.facebook.com/SOLSDESIGN/" target="_blank" title="Notre page Facebook" class="btn social-item"><i class="fa fa-facebook-official fa-4x" aria-hidden="true"></i></a>
+          </div>
           <div class="row align-items-center">
             <div class="col-md-6">
                 <h1 class='text-dark'>Bienvenue!</h1>

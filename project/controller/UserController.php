@@ -12,6 +12,8 @@ class UserController extends Controller{
         /**
          * If the visitor tries to connect
          */
+        $email = "";
+        $datas['email'] = $email;
         if ($this->request->data){
             $data =$this->request->data;
             $data->password = sha1($data->password);
@@ -23,11 +25,11 @@ class UserController extends Controller{
             if (!empty($user)){
                 $this->Session->set('User',$user);
             }else{
+                $email = $data->email;
                 $errors[] = "Votre login ou votre mot de passe sont incorrects";
             }
-
+            $datas['email'] = $email;
             $datas['errors'] = $errors;
-            $this->set($datas);
 
 
         }
@@ -38,6 +40,7 @@ class UserController extends Controller{
                 redirect(BASE_URL.DS.'product'.DS);
             }
         }
+        $this->set($datas);
                 
         
         
@@ -47,6 +50,16 @@ class UserController extends Controller{
     /**
      * If the visitor tries to signin
      */
+    $keys = array(
+        'email',
+        'name',
+        'firstname',
+        'street',
+        'code',
+        'city',
+        'country',
+        'phone'
+    );
     if ($this->request->data){
         $this->loadModel('User');
         $this->User->primaryKey = 'uid';
@@ -95,13 +108,26 @@ class UserController extends Controller{
             }
         }else{
 
-            $datas['email'] = $data->email;
-            $datas['name'] = $data->name;
-            $datas['firstname'] = $data->firstname;
+
+
+            foreach($keys as $key){
+                if(!isset($data->$key)){
+                    $data->$key = "";
+                }
+            }
+            $datas['data'] = $data;
             $datas['errors'] = $errors;
             $this->set($datas);
         }
 
+    }else{
+        $data = (object)[];
+        foreach($keys as $key){
+            $data->$key = "";
+        }
+        $datas['data'] = $data;
+        $this->set($datas);
+    
     }
     
             

@@ -1,3 +1,7 @@
+<?php 
+    $title_layout = "Mofifier un article";
+    $otherCss[] = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'admin'.DS.'editArticle.css">';
+?>
 <?php title(" ");?>
 <form method="POST" action="<?=BASE_URL.DS.'admin'.DS.'editArticle'.DS.$product->pid?>" class="mt-5" enctype="multipart/form-data" id="addForm" style="margin-bottom:100px">
   <div class="container w-100">
@@ -40,59 +44,44 @@
               <?php endforeach; ?>
             </select>
           </div>
+          <div class="form-group">
+                <label for="available">Disponibilité</label>
+                <input type="checkbox" name="available" id="available" <?php if($product->available) echo "checked"?>>
+          </div>
           <button type="submit" class="btn btn-primary">Modifier</button>
         </div>
+
+
+        <?php 
+          $nbCharacteristics = count($characteristics);
+          $i = 0;
+        ?>
         <div class="col">
-
+        <?php $closed =false;?>
+        <?php foreach ($characteristics as $characteristic) :?>
+    
+          <?php if( $i%5 == 0 && $i != 0):?>
+            </div>
+            <div class="col">
+            <?php $closed = false;?>
+          <?php endif;?>
           <div class="form-group">
-            <label for="thickness">Epaisseur</label>
-            <input type="text" value="<?=$product->thickness?>" name="thickness" class="form-control" >
+                <label><?=$characteristic->name;?></label>
+                <input type="text" name="<?=$characteristic->chid?>" value="<?=$characteristic->value?>" class="form-control">
           </div>
+          <?php $i +=1 ;?>
+        <?php endforeach;?>
+        
 
-          <div class="form-group">
-            <label for="conditioning">Conditionnement</label>
-            <input type="text"value="<?=$product->conditioning?>" name="conditioning" class="form-control" >
+        
+        <?php if (!$closed) : ?>
           </div>
+        <?php endif;?>
 
-          <div class="form-group">
-            <label for="matter">Matière</label>
-            <input type="text" value="<?=$product->matter?>" name="matter" class="form-control" >
-          </div>
+        
 
-          <div class="form-group">
-            <label for="color">Couleur</label>
-            <input type="text" value="<?=$product->color?>" name="color" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="edge">Bord</label>
-            <input type="text" value="<?=$product->edge?>" name="edge" class="form-control" >
-          </div>
-
-        </div>
 
         <div class="col">
-
-          <div class="form-group">
-            <label for="putType">Type de pose</label>
-            <input type="text" value="<?=$product->putType?>" name="putType" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="support">Support</label>
-            <input type="text" value="<?=$product->support?>" name="support" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="standard">Norme</label>
-            <input type="text" value="<?=$product->standard?>" name="standard" class="form-control" >
-          </div>
-
-          <div class="form-group">
-            <label for="frostRes">Résistance au gél</label>
-            <input type="text" value="<?=$product->frostRes?>" name="frostRes" class="form-control" >
-          </div>
-
           <div class="form-group">
             <label for="exampleFormControlSelect1">Category</label>
             <select name="category" class="form-control" >
@@ -105,29 +94,26 @@
               <?php endforeach; ?>
             </select>
           </div>
-        
-        </div>
-        <div class="col">
-
-          
           <div class="form-group">
-            <label >Image Principale </label>
+            <label for="file" class="label-file" >Modifier l'image Principale </label>
+            <input type="file" name="file" class="form-control input-file" id="file" onchange="loadFile(event)" >
             <div id="imageContainer">
               <img src="<?=SOURCE.DS.'img'.DS.$product->img_url?>" >
             </div>
-            <input type="file" name="file" class="form-control"  onchange="loadFile(event)" >
           </div>
 
           <div class="form-group">
-            <label >Images Secondaires</label></br>
-            <?php foreach($images as $image): ?>
-              <div class="my-2">
-                <img src="<?=SOURCE.DS.'img'.DS.$image->url?>"></br>
-                <button type="button" class="btn btn-dark w-100 my-1" id="deleteMedia" data-mid="<?=$image->mid?>" >delete</button>
-              </div>
-              
-            <?php endforeach;?>
-            <input type="file" name="files[]" class="form-control" onchange="loadFiles(event)" multiple>
+            <label for="files" class="label-file">Modifier les images Secondaires</label>
+            <input type="file" name="files[]" class="form-control input-file" id="files" onchange="loadFiles(event)" multiple>
+            <div id="imagesContainer" class="row">
+              <?php foreach($images as $image): ?>
+                <div class="my-2">
+                  <img src="<?=SOURCE.DS.'img'.DS.$image->url?>" style='display:inline-block;width:100px;height:100px;margin:15px'></br>
+                  <button type="button" class="btn btn-danger w-50 mx-4 my-1 deleteMedia"  data-mid="<?=$image->mid?>" ><i class="fa fa-trash"></i></button>
+                </div>
+              <?php endforeach;?>
+
+            </div>
           </div>
         
         </div>

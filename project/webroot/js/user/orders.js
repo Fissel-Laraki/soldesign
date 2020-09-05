@@ -5,6 +5,7 @@ function details(oid,j){
     let text = "";
     $.get(url,function(data,status){
         data = JSON.parse(data);
+        console.log(data);
         table = $("#details");
         table.html("");
         

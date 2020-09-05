@@ -60,15 +60,28 @@ class Session{
         return false;
     }
 
-    public function addCart($id,$product){
+    public function addCart($id,$product,$quantity=NULL){
         $product->price = $product->price*(1-($product->promotion/100));
         if (isset($_SESSION['Cart'][$id])){
-            $_SESSION['Cart'][$id]['quantity'] +=  1;
-        }else{
-            $_SESSION['Cart'][$id] = array(
-                'product' => $product,
-                'quantity' => 1
-            );
+            if(isset($quantity)){
+                $_SESSION['Cart'][$id]['quantity'] =  $quantity;
+            }else{
+                $_SESSION['Cart'][$id]['quantity'] +=  1;
+            }
+        }
+        else{
+            if(isset($quantity)){
+                $_SESSION['Cart'][$id] = array(
+                    'product' => $product,
+                    'quantity' => $quantity
+                );
+            }else{
+                $_SESSION['Cart'][$id] = array(
+                    'product' => $product,
+                    'quantity' => 1 
+                );
+
+            }
         }
     }
 

@@ -39,14 +39,20 @@
 			<!-- gallery-wrap .end// -->
 		</aside>
 		<aside class="col-sm-5">
-			<article class="card-body p-5">
+			<article class="card-body p-2">
 				<h3 class="title mb-3"><?=strtoupper($product->name)?></h3>
 				<p class="price-detail-wrap">
 					<span class="price h3">
-						<span class="currency">€</span>
-						<span class="num"><?=$product->price?></span>
+						<?php if ($product->promotion > 0):?>
+							<span style="text-decoration:line-through; font-size : smaller; color: red"><?=$product->price?></span>
+							<span class="currency">€</span>
+							<span class="num" id="price"><?=$product->price*(1-($product->promotion/100))?></span>
+						<?php else:?>
+							<span class="currency">€</span>
+							<span class="num" id="price"><?=$product->price?></span>
+						<?php endif;?>
 					</span>
-					<span>par ...</span>
+					<span>par m²</span>
 				</p>
 			
 				<dl class="param param-feature">
@@ -78,6 +84,8 @@
 				<!-- item-property-hor .// -->
 				<hr>
 				<!-- row.// -->
+				<input type="number" class="border-1  px-2 my-2 py-2" id="quantity" placeholder="Quantité"><br/>
+				<div class="my-2 w-100 h5">Total prévisionnel : <span id="total"></span></div>
 				<button class="btn btn-lg btn-outline-dark text-uppercase" id="addCartBtn" onclick="addCart(<?=$product->pid?>)" ><i class="fa fa-shopping-cart"></i> Ajouter au panier </button>
 			</article>
 			<!-- card-body.// -->
@@ -96,42 +104,12 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<th scope="row">Epaisseur</td>
-					<td><?=$product->thickness?> mm</td>
-				</tr>
-				<tr>
-					<th scope="row">Couleur</td>
-					<td><?=$product->color?></td>
-				</tr>
-				<tr>
-					<th scope="row">Matiere</td>
-					<td><?=$product->matter?></td>
-				</tr>
-				<tr>
-					<th scope="row">Bord</td>
-					<td><?=$product->edge?></td>
-				</tr>
-				<tr>
-					<th scope="row">Type de pose</td>
-					<td><?=$product->putType?></td>
-				</tr>
-				<tr>
-					<th scope="row">Support</td>
-					<td><?=$product->support?></td>
-				</tr>
-				<tr>
-					<th scope="row">Conditionnement</td>
-					<td><?=$product->conditioning?> m²/colis</td>
-				</tr>
-				<tr>
-					<th scope="row">Norme</td>
-					<td><?=$product->standard?></td>
-				</tr>
-				<tr>
-					<th scope="row">Résistance au gel</td>
-					<td><?=$product->frostRes?></td>
-				</tr>
+				<?php foreach($characteristics as $characteristic) :?>
+					<tr>
+						<th scope="row"><?=$characteristic->name?></th>
+						<td><?=$characteristic->value."   ".$characteristic->unit?></td>
+					</tr>
+				<?php endforeach;?>
 			</tbody>
 		</table>
     </div>

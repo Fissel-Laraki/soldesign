@@ -13,53 +13,52 @@
 
 <div class="container-fluid mt-5">
     <div class="row">
-        <div class="col-lg-3 myBorder d-none d-lg-block col-sm-12" id="filter">
-            <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">show filters</button>
+        <div class="col-lg-3 myBorder d-none d-lg-block col-sm-12  px-5 py-2" id="filter">
+            <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">FILTRER</button>
             <form action="<?=BASE_URL.DS.'product'?>" method="get" id="form">
             
                 <!-- filter -->
-                <label for="name" class="font-weight-bold">Par nom</label>
                 <div>
-                    <input type="text" name="name" class="" value="<?=$name?>"  id="search" placeholder="Cherchez un article...">
+                    <input type="text" name="name" class="" value="<?=$name?>"  id="search" placeholder="Cherchez un article..." style="height:50px;font-size:20px">
                 </div>
                 <hr/>
                 <!--Categories -->
-                <label for="categories" class="font-weight-bold">Categories</label>
+                <label for="categories" class="font-weight-bold">CATEGORIES</label>
                 <?php foreach($categories as $category): ?>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="categories[<?=$category->cid?>]" class="categoryCheck" <?php if(isset($category->checked)) echo "checked"?>> <?=$category->name?></label>
+                        <label><input type="checkbox" name="categories[<?=$category->cid?>]" class="categoryCheck" <?php if(isset($category->checked)) echo "checked"?>><span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span><?=$category->name?></label>
                     </div>
                 <?php endforeach?>
 
                 <!--Series -->
                 <hr/>
-                <label for="categories" class="font-weight-bold">Series</label>
+                <label for="categories" class="font-weight-bold">SERIES</label>
                 <?php foreach($series as $serie): ?>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="series[<?=$serie->sid?>]"  class="serieCheck" <?php if(isset($serie->checked)) echo "checked"?>> <?=$serie->name?></label>
+                        <label><input type="checkbox" name="series[<?=$serie->sid?>]"  class="serieCheck" <?php if(isset($serie->checked)) echo "checked"?>> <span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span><?=$serie->name?></label>
                     </div>
                 <?php endforeach?>
             
                 <!-- Formats -->
                 <hr/>
-                <label for="format" class="font-weight-bold">Dimensions</label>
+                <label for="format" class="font-weight-bold">DIMENSIONS</label>
                 <?php foreach($formats as $format): ?>
                     <div class="checkbox">
-                        <label><input type="checkbox" name="formats[<?=$format->name?>]" class="icheck" <?php if(isset($format->checked)) echo "checked"?> > <?=$format->name?></label>
+                        <label><input type="checkbox" name="formats[<?=$format->name?>]" class="icheck" <?php if(isset($format->checked)) echo "checked"?> > <span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span><?=$format->name?></label>
                     </div>
                 <?php endforeach?>
 
                 
                 <hr/>
-                <label  class="font-weight-bold">Prix</label>
+                <label  class="font-weight-bold">PRIX</label>
                 <div>
                     <div>
-                        <label for="min">Min</label>
+                        <label for="min">min</label>
                         <input type="range" min="0" max="200" value="<?=$minPrice?>" name="min" id="inputMin">
                         <div id="priceMin" class="d-inline-block"><?=$minPrice?></div>
                     </div>
                     <div>
-                        <label for="max">Max</label>
+                        <label for="max">max</label>
                         <input type="range" min="0" max="200" value="<?=$maxPrice?>" name="max" id="inputMax">
                         <div id="priceMax" class="d-inline-block"><?=$maxPrice?></div>
                     </div>
@@ -69,7 +68,7 @@
                 <!-- Sale -->
                 <hr/>
                 <div class="checkbox">
-                    <label><input type="checkbox" name="sale" class="icheck" <?php if(isset($saleChecked)) echo "checked"?> > En promotion</label>
+                    <label><input type="checkbox" name="sale" class="icheck" <?php if(isset($saleChecked)) echo "checked"?> ><span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span>Promotion</label>
                 </div>
 
                 <!-- Min Max price
@@ -100,11 +99,11 @@
                                 
                             </ul>
                             <?php if($product->promotion > 0 ) : ?>
-                            <span class="product-discount-label"><i class="fa fa-star" aria-hidden="true"></i> <?=$product->promotion?>%</span>
+                            <span class="product-discount-label"><i class="fa fa-star fa-1x" aria-hidden="true"></i> <?=$product->promotion?>%</span>
                             <?php endif; ?>
                         </div>
                         <div class="product-content">
-                            <h3 class="title"><a href="#"><?=$product->name?> <?=$product->format?></a></h3>
+                            <h3 class="title"><a href="#"><strong><?=strtoupper($product->name.$product->format)?></strong></a></h3>
                             <div class="price">
                                 <?php if($product->promotion > 0) :?>
                                 <?=$product->price * (1.0-($product->promotion/100))?>€

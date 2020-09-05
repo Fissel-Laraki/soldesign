@@ -5,6 +5,7 @@ class AdminController extends Controller{
 
     
 
+    
 
     function articles(){
 
@@ -13,8 +14,14 @@ class AdminController extends Controller{
         $this->loadModel('Serie');
         $this->loadModel('Category');
         $this->loadModel('Format');
+        $this->loadModel('Characteristic');
+        $this->loadModel('Type');
+
         $this->Product->primaryKey = "pid";
-        
+
+        $characteristics = $this->Characteristic->find(array(
+            'conditions' => array()
+        ));
         $products = $this->Product->find(array(
             'limit' => ($perPage*($this->request->page-1)).','.$perPage
         ));
@@ -27,39 +34,72 @@ class AdminController extends Controller{
         $formats = $this->Format->find(array(
             'conditions' => "name != 'Tous'"
         ));
+        $types = $this->Type->find(array(
+            'conditions' => array()
+        ));
+
+        $typeRef = array();
+
+        foreach($types as $type){
+            $typeRef[$type->tid] = $type->name;
+        }
+
         $data['total'] = $this->Product->findCount();
         $data['page'] = ceil($data['total']/$perPage);
         $data['categories'] = $categories;
         $data['series'] = $series;
         $data['products'] = $products;
         $data['formats'] = $formats;
+        $data['characteristics'] = $characteristics;
+        $data['types'] = $types;
+        $data['typeRef'] = $typeRef;
         $this->set($data);
         
     }
 
-    function deleteArticle($pid){
+    function deleteArticle($pid,$page){
         $this->loadModel('Product');
         $this->Product->primaryKey = 'pid';
-        $this->Product->delete($pid);
-        redirect(BASE_URL.DS.'admin'.DS.'articles');
+        $this->Product->edit($pid,array(
+            'deleted' => '1'
+        ));
+        redirect(BASE_URL.DS.'admin'.DS.'articles?page='.$page);
 
     }
+
+    function restoreArticle($pid,$page){
+        $this->loadModel('Product');
+        $this->Product->primaryKey = 'pid';
+        $this->Product->edit($pid,array(
+            'deleted' => '0'
+        ));
+        redirect(BASE_URL.DS.'admin'.DS.'articles?page='.$page);
+
+    }
+
 
     function addArticle(){
         $this->loadModel('Product');
         $this->loadModel('Category');
         $this->loadModel('Serie');
         $this->loadModel('Media');
+        $this->loadModel('Lnk_product_characteristic');
         
         $this->Serie->primaryKey = 'sid';
         $this->Category->primaryKey = 'cid';
         
 
+        $data2 = (object)[];
         $data = $this->request->data;
         $files = diverse_array($_FILES['files']);
         $data->img_url = $_FILES['file']['name'];
         
-        
+        foreach($data as $k => $v){
+            if(is_numeric($k)){
+                unset($data->$k);
+                $data2->$k = $v;
+            }
+        }        
 
         $serie = $this->Serie->findFirst(array(
             'conditions' => array('name' => $data->serie)
@@ -84,6 +124,9 @@ class AdminController extends Controller{
             move_uploaded_file($file['tmp_name'],$dest.$file['name']);
             $this->Media->insert($lastId,$file['name']);
         }
+
+        $this->Lnk_product_characteristic->insert($data2,$lastId);
+
  
         move_uploaded_file($_FILES['file']['tmp_name'],$dest.$_FILES['file']['name']);
 
@@ -99,6 +142,8 @@ class AdminController extends Controller{
             $this->loadModel('Serie');
             $this->loadModel('Category');
             $this->loadModel('Format');
+            $this->loadModel('Lnk_product_characteristic');
+            
 
             $series = $this->Serie->find(array());
             $categories = $this->Category->find(array());
@@ -122,6 +167,8 @@ class AdminController extends Controller{
             $formats = $this->Format->find(array(
                 'conditions' => "name != 'Tous'"
             ));
+
+            $characteristics = $this->Lnk_product_characteristic->findCharacteristics($id);
             
             
             $data['categories'] = $categories;
@@ -131,6 +178,7 @@ class AdminController extends Controller{
             $data['current_category'] = $current_category;
             $data['images'] = $images;
             $data['formats'] = $formats;
+            $data['characteristics'] = $characteristics;
 
             $this->set($data);
         }else{
@@ -138,6 +186,7 @@ class AdminController extends Controller{
             $this->loadModel('Category');
             $this->loadModel('Serie');
             $this->loadModel('Media');
+            $this->loadModel('Lnk_product_characteristic');
 
             $this->Serie->primaryKey = 'sid';
             $this->Category->primaryKey = 'cid';
@@ -145,10 +194,23 @@ class AdminController extends Controller{
 
             $data = $this->request->data;
 
+            if(isset($data->available)){
+                $data->available = 1;
+            }else{
+                $data->available = 0;
+            }
+
             $product = $this->Product->findFirst(array(
                 'conditions' => array('pid'=>$id)
             ));
 
+            $data2 = (object) [];
+            foreach($data as $k => $v){
+                if(is_numeric($k)){
+                    unset($data->$k);
+                    $data2->$k = $v;
+                }
+            }        
 
             $dest = WEBROOT.DS.'img/';
             $data->sid = $data->serie;
@@ -158,23 +220,35 @@ class AdminController extends Controller{
                 $data->img_url = $_FILES['file']['name'];
                 move_uploaded_file($_FILES['file']['tmp_name'],$dest.$_FILES['file']['name']);
             }
+            
 
             if ($_FILES['files']['name'][0]){
                 $files = diverse_array($_FILES['files']);
                 $images = $this->Media->find(array(
-                    'conditions' => array('mid' => $id)
+                    'conditions' => array('aid' => $id)
                 ));
-
+                $imgs = array();
+                foreach($images as $i){
+                    $imgs[] = $i->url;
+                }
+                debug($imgs);
                 foreach($files as $file){
-                    move_uploaded_file($file['tmp_name'],$dest.$file['name']);
-                    $this->Media->insert($id,$file['name']);
+                    echo $file['name'];
+                    if (!in_array($file['name'],$imgs)){
+                        echo "added ";
+                        move_uploaded_file($file['tmp_name'],$dest.$file['name']);
+                        $this->Media->insert($id,$file['name']);
+                    }
                 }
                 
             }
             unset($data->serie);
             unset($data->category);
 
-            $this->Product->edit($id,$data);
+            $this->Product->edit($id,$data);  
+            foreach($data2 as $k=>$v){
+                $this->Lnk_product_characteristic->editCharacteristics($id,$k,$v);
+            }
             redirect(BASE_URL.DS.'admin'.DS.'articles');
         }
 
@@ -301,6 +375,27 @@ class AdminController extends Controller{
             redirect(BASE_URL.DS.'admin'.DS.'series');
 
         }
+    }
+
+    function other(){
+        $this->loadModel('Product');
+        $this->loadModel('Characteristic');
+        $characteristics = $this->Characteristic->find(array(
+            'conditions' => array()
+        ));
+        $elements = $this->Product->find(array(
+            'conditions' => array()
+        ));
+        $data['elements'] = $elements;
+        $data['characteristics'] = $characteristics;
+
+        $this->set($data);
+    }
+
+    function addOther(){
+        debug($this->request->data);
+        die();
+
     }
 
     function deleteMedia($id){

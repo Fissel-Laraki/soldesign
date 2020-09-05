@@ -3,16 +3,32 @@ html{
 }
 html,
 body {
+  font-family: 'Roboto', sans-serif;
   height: 100%;
 }
+.active{
+  color : white;
+  
+}
 
+#totalCart{
 
+  background-color: black !important;
+}
 
 #page-content {
   flex: 1 0 auto;
 }
 
+.navbar{
+  background-color: black !important;
+  margin-bottom: 0px;
+}
+.footer{
+  
 
+  background-color: black !important;
+}
 
 img{
   width : 300px;
@@ -73,4 +89,13 @@ img{
 .slideIn {
   -webkit-animation-name: slideIn;
   animation-name: slideIn;
+}
+
+.tableLi{
+  list-style-type: none;
+}
+.tableTitle{
+  color : white;
+  text-align: center;
+  font-size: larger;
 }

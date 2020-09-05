@@ -17,7 +17,6 @@ $(".product").show(1000);
 function addCart(id){
     $.get(BASE_URL+"product/addCart/"+id,(data)=>{
         if(data){
-            console.log(data);
             changeCart(parseInt(data));
         }
     });
