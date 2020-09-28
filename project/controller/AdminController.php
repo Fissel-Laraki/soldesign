@@ -16,6 +16,11 @@ class AdminController extends Controller{
         $this->loadModel('Format');
         $this->loadModel('Characteristic');
         $this->loadModel('Type');
+        $this->loadModel('Accessory');
+        $this->loadModel('Consumable');
+
+        $accessories = $this->Accessory->find(array());
+        $consumables = $this->Consumable->find(array());
 
         $this->Product->primaryKey = "pid";
 
@@ -44,6 +49,8 @@ class AdminController extends Controller{
             $typeRef[$type->tid] = $type->name;
         }
 
+        $data['accessories'] = $accessories;
+        $data['consumables'] = $consumables;
         $data['total'] = $this->Product->findCount();
         $data['page'] = ceil($data['total']/$perPage);
         $data['categories'] = $categories;
@@ -100,21 +107,6 @@ class AdminController extends Controller{
                 $data2->$k = $v;
             }
         }        
-
-        $serie = $this->Serie->findFirst(array(
-            'conditions' => array('name' => $data->serie)
-        ));
-
-        $category = $this->Category->findFirst(array(
-            'conditions' => array('name' => $data->category)
-        ));
-        
-        
-        $data->sid = $data->serie;
-        $data->cid = $data->category;
-        unset($data->serie);
-        unset($data->category);
-
         $this->Product->insert($data);
 
         $lastId = $this->Product->getLastId();
@@ -122,10 +114,10 @@ class AdminController extends Controller{
  
         foreach($files as $file){
             move_uploaded_file($file['tmp_name'],$dest.$file['name']);
-            $this->Media->insert($lastId,$file['name']);
+            $this->Media->insertMedia($lastId,$file['name']);
         }
 
-        $this->Lnk_product_characteristic->insert($data2,$lastId);
+        $this->Lnk_product_characteristic->insertLnk($data2,$lastId);
 
  
         move_uploaded_file($_FILES['file']['tmp_name'],$dest.$_FILES['file']['name']);
@@ -143,46 +135,85 @@ class AdminController extends Controller{
             $this->loadModel('Category');
             $this->loadModel('Format');
             $this->loadModel('Lnk_product_characteristic');
-            
+            $this->loadModel('Type');
+            $this->loadModel('Accessory');
+            $this->loadModel('Consumable');
 
-            $series = $this->Serie->find(array());
-            $categories = $this->Category->find(array());
+
+            $typestmp = $this->Type->find(array());
+            $types = array();
+            
+            foreach($typestmp as $tmp){
+                $types[$tmp->name] = $tmp->tid;
+            }
             
             $product =  $this->Product->findFirst(array(
                 'conditions' => array('pid'=>$id)
             ));
 
-            $current_serie = $this->Serie->findFirst(array(
-                'conditions' => array('sid'=>$product->sid)
-            ))->name;
-
-            $current_category = $this->Category->findFirst(array(
-                'conditions' => array('cid'=>$product->cid)
-            ))->name;
 
             $images = $this->Media->find(array(
                 'conditions' => array('aid' => $product->pid)
             ));
 
-            $formats = $this->Format->find(array(
-                'conditions' => "name != 'Tous'"
-            ));
+            if ($product->tid == $types['tile']){
+
+                $series = $this->Serie->find(array());
+                $categories = $this->Category->find(array());
+                $formats = $this->Format->find(array(
+                    'conditions' => "name != 'Tous'"
+                ));
+
+                $current_serie = $this->Serie->findFirst(array(
+                    'conditions' => array('sid'=>$product->sid)
+                ))->name;
+
+                $current_category = $this->Category->findFirst(array(
+                    'conditions' => array('cid'=>$product->cid)
+                ))->name;
+
+                $data['formats'] = $formats;
+                $data['current_serie'] = $current_serie;
+                $data['current_category'] = $current_category;
+                $data['categories'] = $categories;
+                $data['series'] = $series;
+                $data['currentTile'] = (object)array(
+                    'tid' => $types['tile'],
+                    'name' => 'tile'
+                );  
+
+            }else if($product->tid == $types['accessory']){
+                
+                $accessories = $this->Accessory->find(array());
+                $data['accessories'] = $accessories;
+                $data['currentAccessory'] = (object)array(
+                    'tid' => $types['accessory'],
+                    'name' => 'accessory'
+                );
+            }else {// consumables
+                
+                $consumables = $this->Consumable->find(array());
+                $data['consumables'] = $consumables;
+                $data['currentConsumable'] = (object)array(
+                    'tid' => $types['consumable'],
+                    'name' => 'consumable'
+                );
+            }
 
             $characteristics = $this->Lnk_product_characteristic->findCharacteristics($id);
             
             
-            $data['categories'] = $categories;
-            $data['series'] = $series;
             $data['product'] = $product;
-            $data['current_serie'] = $current_serie;
-            $data['current_category'] = $current_category;
             $data['images'] = $images;
-            $data['formats'] = $formats;
             $data['characteristics'] = $characteristics;
+            $data['isTile'] = $product->tid == $types['tile'];
+            $data['isAccessory'] = $product->tid == $types['accessory'];
+            $data['isConsumable'] = $product->tid == $types['consumable'];
+
 
             $this->set($data);
         }else{
-
+        
             $this->loadModel('Category');
             $this->loadModel('Serie');
             $this->loadModel('Media');
@@ -237,7 +268,7 @@ class AdminController extends Controller{
                     if (!in_array($file['name'],$imgs)){
                         echo "added ";
                         move_uploaded_file($file['tmp_name'],$dest.$file['name']);
-                        $this->Media->insert($id,$file['name']);
+                        $this->Media->insertMedia($id,$file['name']);
                     }
                 }
                 
@@ -392,12 +423,6 @@ class AdminController extends Controller{
         $this->set($data);
     }
 
-    function addOther(){
-        debug($this->request->data);
-        die();
-
-    }
-
     function deleteMedia($id){
         $this->loadModel('Media');
         $this->Media->primaryKey = 'mid';
@@ -424,7 +449,168 @@ class AdminController extends Controller{
 
     function updateOrder($oid){
         $this->loadModel('Orders');
+        $this->loadModel('Product');
+        $this->loadModel('Lnk_orders_product');
         $this->Orders->update(" status = 'Traitée' ", " oid = ".$oid);
+
+        $cart = $this->Lnk_orders_product->getProductsOfOrder($oid);
+        foreach($cart as $item){
+            $this->Product->update("quantity = quantity - ".$item->quantity,"pid = ".$item->pid);
+        }
         
     }
+
+
+    function consumables(){
+        $this->loadModel('Consumable');
+        
+        $consumables = $this->Consumable->find(array());
+
+        $data['consumables'] = $consumables;
+        $this->set($data);
+    }
+    function deleteConsumable($coid){
+        $this->loadModel('Consumable');
+        $this->Consumable->primaryKey = 'coid';
+        $this->Consumable->delete($coid);
+        redirect(BASE_URL.DS.'admin'.DS.'consumables');
+
+    }
+
+    function addConsumable(){
+
+        $this->loadModel('Consumable');
+        
+        $this->Consumable->primaryKey = 'coid';
+        
+        $data = $this->request->data;
+
+        $this->Consumable->insert($data);
+
+        redirect(BASE_URL.DS.'admin'.DS.'consumables');
+    }
+
+    function editConsumable($coid){
+        $this->loadModel('Consumable');
+        $this->Consumable->primaryKey = 'coid';
+        if(!$this->request->data){
+            // If we didn't received POST data
+            $consumable = $this->Consumable->findFirst(array(
+                'conditions' => array('coid' => $coid)
+            ));
+            
+            $data['consumable'] = $consumable;
+
+            $this->set($data);
+
+            
+        }else{
+
+            $this->Consumable->edit($coid,$this->request->data);
+            redirect(BASE_URL.DS.'admin'.DS.'consumables');
+
+        }
+    }
+    function accessories(){
+        $this->loadModel('Accessory');
+        
+        $accessories = $this->Accessory->find(array());
+
+        $data['accessories'] = $accessories;
+        $this->set($data);
+    }
+    function deleteAccessory($acid){
+        $this->loadModel('Accessory');
+        $this->Accessory->primaryKey = 'acid';
+        $this->Accessory->delete($acid);
+        redirect(BASE_URL.DS.'admin'.DS.'accessories');
+
+    }
+
+    function addAccessory(){
+
+        $this->loadModel('Accessory');
+        
+        $this->Accessory->primaryKey = 'acid';
+        
+        $data = $this->request->data;
+
+        $this->Accessory->insert($data);
+
+        redirect(BASE_URL.DS.'admin'.DS.'accessories');
+    }
+
+    function editAccessory($acid){
+        $this->loadModel('Accessory');
+        $this->Accessory->primaryKey = 'acid';
+        if(!$this->request->data){
+            // If we didn't received POST data
+            $accessory = $this->Accessory->findFirst(array(
+                'conditions' => array('acid' => $acid)
+            ));
+            
+            $data['accessory'] = $accessory;
+
+            $this->set($data);
+
+            
+        }else{
+
+            $this->Accessory->edit($acid,$this->request->data);
+            redirect(BASE_URL.DS.'admin'.DS.'accessories');
+
+        }
+    }
+
+    function characteristics(){
+        $this->loadModel('Characteristic');
+        
+        $characteristics = $this->Characteristic->find(array());
+
+        $data['characteristics'] = $characteristics;
+        $this->set($data);
+    }
+    function deleteCharacteristic($chid){
+        $this->loadModel('Characteristic');
+        $this->Characteristic->primaryKey = 'chid';
+        $this->Characteristic->delete($chid);
+        redirect(BASE_URL.DS.'admin'.DS.'characteristics');
+
+    }
+
+    function addCharacteristic(){
+
+        $this->loadModel('Characteristic');
+        
+        $this->Characteristic->primaryKey = 'chid';
+        
+        $data = $this->request->data;
+
+        $this->Characteristic->insert($data);
+
+        redirect(BASE_URL.DS.'admin'.DS.'characteristics');
+    }
+
+    function editCharacteristic($chid){
+        $this->loadModel('Characteristic');
+        $this->Characteristic->primaryKey = 'chid';
+        if(!$this->request->data){
+            // If we didn't received POST data
+            $characteristic = $this->Characteristic->findFirst(array(
+                'conditions' => array('chid' => $chid)
+            ));
+            
+            $data['characteristic'] = $characteristic;
+
+            $this->set($data);
+
+            
+        }else{
+
+            $this->Characteristic->edit($chid,$this->request->data);
+            redirect(BASE_URL.DS.'admin'.DS.'characteristics');
+
+        }
+    }
+
 }

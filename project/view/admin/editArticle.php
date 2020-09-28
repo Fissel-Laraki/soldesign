@@ -1,5 +1,5 @@
 <?php 
-    $title_layout = "Mofifier un article";
+    $title_layout = "Modifier un article";
     $otherCss[] = '<link rel="stylesheet" href="'.SOURCE.DS.'css'.DS.'admin'.DS.'editArticle.css">';
 ?>
 <?php title(" ");?>
@@ -12,18 +12,65 @@
             <label for="exampleInputEmail1">Name</label>
             <input type="text" name="name" value="<?=$product->name?>" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
-          <div class="form-group">
-            <label >format</label>
-            <select name="format" class="form-control" >
-              <?php foreach($formats as $format) :?>
-                <?php if ($format->name  == $product->format) : ?>
-                  <option value="<?=$format->name?>" selected><?=$format->name?></option>
+          <?php if($isTile):?>
+            <div class="form-group">
+              <label >format</label>
+              <select name="format" class="form-control" >
+                <?php foreach($formats as $format) :?>
+                  <?php if ($format->name  == $product->format) : ?>
+                    <option value="<?=$format->name?>" selected><?=$format->name?></option>
+                  <?php else:?>
+                    <option value="<?=$format->name?>" ><?=$format->name?></option>
+                  <?php endif;?>
+                <?php endforeach;?>
+              </select>
+            </div>
+
+          
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Serie</label>
+              <select name="serie" class="form-control">
+                <?php foreach($series as $serie) :?>
+                <?php if($serie->name==$current_serie) :?>
+                  <option value="<?=$serie->sid?>" selected><?=$serie->name ?></option>
                 <?php else:?>
-                  <option value="<?=$format->name?>" ><?=$format->name?></option>
+                  <option value="<?=$serie->sid?>"><?=$serie->name ?></option>
                 <?php endif;?>
-              <?php endforeach;?>
-            </select>
-          </div>
+                <?php endforeach; ?>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Category</label>
+              <select name="category" class="form-control" >
+                <?php foreach($categories as $category) :?>  
+                <?php if($category->name==$current_category) :?>
+                  <option value="<?=$category->cid?>" selected><?=$category->name ?></option>
+                <?php else: ?>
+                  <option value="<?=$category->cid?>" ><?=$category->name ?></option>
+                <?php endif;?>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          <?php elseif($isAccessory):?>
+            <div class="form-group types" data-tid="1">
+              <label for="exampleFormControlSelect1">Type d'accessoires</label>
+              <select name="acid" class="form-control" >
+                <?php foreach($accessories as $accessory) :?>
+                  <option value="<?=$accessory->acid?>" <?php if($accessory->name==$currentAccessory->name) echo"selected"?>><?=$accessory->name ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          <?php else: ?>
+            <div class="form-group types" data-tid="2">
+              <label for="exampleFormControlSelect1">Type de consommables</label>
+              <select name="coid" class="form-control" >
+                <?php foreach($consumables as $consumable) :?>
+                  <option value="<?=$consumable->coid?>" <?php if($consumable->name==$currentConsumable->name) echo"selected"?>><?=$consumable->name ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          <?php endif;?>
           <div class="form-group">
             <label for="exampleInputPassword1">Prix</label>
             <input type="number" name="price" value="<?=$product->price?>" class="form-control">
@@ -31,18 +78,6 @@
           <div class="form-group">
             <label for="exampleInputPassword1">Promotion</label>
             <input type="number" name="promotion" value="<?=$product->promotion?>" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Serie</label>
-            <select name="serie" class="form-control">
-              <?php foreach($series as $serie) :?>
-              <?php if($serie->name==$current_serie) :?>
-                <option value="<?=$serie->sid?>" selected><?=$serie->name ?></option>
-              <?php else:?>
-                <option value="<?=$serie->sid?>"><?=$serie->name ?></option>
-              <?php endif;?>
-              <?php endforeach; ?>
-            </select>
           </div>
           <div class="form-group">
                 <label for="available">Disponibilité</label>
@@ -82,18 +117,6 @@
 
 
         <div class="col">
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Category</label>
-            <select name="category" class="form-control" >
-              <?php foreach($categories as $category) :?>  
-              <?php if($category->name==$current_category) :?>
-                <option value="<?=$category->cid?>" selected><?=$category->name ?></option>
-              <?php else: ?>
-                <option value="<?=$category->cid?>" ><?=$category->name ?></option>
-              <?php endif;?>
-              <?php endforeach; ?>
-            </select>
-          </div>
           <div class="form-group">
             <label for="file" class="label-file" >Modifier l'image Principale </label>
             <input type="file" name="file" class="form-control input-file" id="file" onchange="loadFile(event)" >

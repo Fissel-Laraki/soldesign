@@ -55,6 +55,7 @@
 					<span>par m²</span>
 				</p>
 			
+				<?php if ($product->format != "") :?>
 				<dl class="param param-feature">
 					<dt>
 						Dimensions
@@ -63,24 +64,18 @@
 						<?=$product->format?> cm²
 					</dd>
 				</dl>
+				<?php endif;?>
 				<!-- item-property-hor .// -->
-				<dl class="param param-feature">
-					<dt>
-                        Serie
-					</dt>
-					<dd>
-						<?=$product->serie?>
-					</dd>
-				</dl>
-				<!-- item-property-hor .// -->
-				<dl class="param param-feature">
-					<dt>
-						Déstination
-					</dt>
-					<dd>
-						<?=$product->category?>
-					</dd>
-				</dl>
+				<?php foreach($productDetails as $detail) :?>
+					<dl class="param param-feature">
+						<dt>
+							<?=$detail->key?>
+						</dt>
+						<dd>
+							<?=$detail->value?>
+						</dd>
+					</dl>
+				<?php endforeach;?>
 				<!-- item-property-hor .// -->
 				<hr>
 				<!-- row.// -->

@@ -2,7 +2,7 @@
 <?php
 
 class Lnk_product_characteristic extends Model{
-    function insert($data,$id){
+    function insertLnk($data,$id){
         $sql = 'INSERT INTO '. $this->table .' (pid,chid,value) values';
         $d = array();
         foreach($data as $k => $v){

@@ -12,6 +12,7 @@
                     <tr>
                     <th scope="col">#</th>
                     <th scope="col">Client</th>
+                    <th scope="col">Téléphone</th>
                     <th scope="col">Date</th>
                     <th scope="col">Total</th>
                     <th scope="col">Confirmer la commande</th>
@@ -23,9 +24,10 @@
                     <tr data-oid=<?=$order->oid?> data-i = <?=$i?> class="classTr">
                         <th scope="row"><?=$i?></th>
                         <td><?=$order->email?></td>
+                        <td><?=$order->phone?></td>
                         <td><?=$order->date?></td>
                         <td><?=$order->total?>€</td>
-                        <td><button class="btn btn-dark confirm-btn" data-oid=<?=$order->oid?>><i class="fa fa-check" aria-hidden="true"></i></button></td>
+                        <td><button class="btn btn-dark confirm-btn mx-5" data-oid=<?=$order->oid?>><i class="fa fa-check" aria-hidden="true"></i></button></td>
                     </tr>
                     <?php $i += 1;?>
                     <?php endforeach ;?>

@@ -119,7 +119,6 @@ class UserController extends Controller{
             $datas['errors'] = $errors;
             $this->set($datas);
         }
-
     }else{
         $data = (object)[];
         foreach($keys as $key){

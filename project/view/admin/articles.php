@@ -7,10 +7,10 @@
 <?php
     unset($_GET['page']);
 ?>
-<div class="container">
+<div class="container h-100">
 	<div class="row">
 		<div class="col-md-12">
-      <button type="button" id="addBtn" class="btn btn-dark my-5">Ajouter un article</button>
+      <button type="button" id="addBtn" class="btn btn-dark my-5">Ajouter</button>
 			<h4>Articles</h4>
 			<div class="table-responsive">
 				<table id="mytable" class="table table-bordred table-striped">
@@ -105,7 +105,7 @@
             <label for="exampleInputEmail1">Name</label>
             <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
           </div>
-          <div class="form-group">
+          <div class="form-group types" data-tid="3">
             <label >format</label>
             <select name="format" class="form-control" >
               <?php foreach($formats as $format) :?>
@@ -121,37 +121,62 @@
             <label for="exampleInputPassword1">Promotion</label>
             <input type="number" name="promotion" class="form-control" >
           </div>
+
           <div class="form-group">
+                <label>Type de produit</label>
+                <select name="tid" class="form-control" id="selectType">
+                  <?php foreach($types as $type) : ?>
+                    <option value="<?=$type->tid?>" <?php if($type->tid==3) echo "selected" ?>><?=$type->name?></option>
+                  <?php endforeach;?>
+                </select>
+          </div>
+          <button type="submit" class="btn btn-outline-success">Confirmer</button>
+        </div>
+
+        <div class="col">
+          
+          <div class="form-group">
+            <label>Quantité</label>
+            <input type="number" name="quantity" class="form-control">
+          </div>
+          <div class="form-group types" data-tid="3">
             <label for="exampleFormControlSelect1">Serie</label>
-            <select name="serie" class="form-control">
+            <select name="sid" class="form-control">
+              <option disabled selected value> -- select an option -- </option>
               <?php foreach($series as $serie) :?>
                 <option value="<?=$serie->sid?>"><?=$serie->name ?></option>
               <?php endforeach; ?>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-
-        <div class="col">
-
-          <div class="form-group">
-                <label>Type de produit</label>
-                <select name="tid" class="form-control">
-                  <?php foreach($types as $type) : ?>
-                    <option value="<?=$type->tid?>"><?=$type->name?></option>
-                  <?php endforeach;?>
-                </select>
-          </div>
           
-          <div class="form-group">
+          <div class="form-group types" data-tid="3">
             <label for="exampleFormControlSelect1">Category</label>
-            <select name="category" class="form-control" >
+            <select name="cid" class="form-control" >
+              <option disabled selected value> -- select an option -- </option>
               <?php foreach($categories as $category) :?>
                 <option value="<?=$category->cid?>"><?=$category->name ?></option>
               <?php endforeach; ?>
             </select>
           </div>
 
+          <div class="form-group types d-none" data-tid="1">
+            <label for="exampleFormControlSelect1">Type d'accessoires</label>
+            <select name="acid" class="form-control" >
+            <option disabled selected value> -- select an option -- </option>
+              <?php foreach($accessories as $accessory) :?>
+                <option value="<?=$accessory->acid?>"><?=$accessory->name ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div class="form-group types d-none" data-tid="2">
+            <label for="exampleFormControlSelect1">Type de consommables</label>
+            <select name="coid" class="form-control" >
+            <option disabled selected value> -- select an option -- </option>
+              <?php foreach($consumables as $consumable) :?>
+                <option value="<?=$consumable->coid?>"><?=$consumable->name ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
           <div class="form-group">
             <label for="addCarac">Ajouter une caractéristique</label>
             <button type="button" id="addCharac" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i></button>

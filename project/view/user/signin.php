@@ -6,11 +6,11 @@
 ?>
 
 <!-- Connexion Form -->
-<div id="login" class="my-1 h-100">
+<div id="login" class="my-1">
         <div class="container-flex my-5 mx-5">
             <div id="login-row" class="row align-items-center justify-content-center ">
 
-              <div class="col-6 h-100">
+              <div class="col-6">
                 <img src="<?=SOURCE.DS.'img'.DS.'logos'.DS.'logonoir.png'?>" class="w-100 h-100">
               </div>
 

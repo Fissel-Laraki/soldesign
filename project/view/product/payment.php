@@ -1,5 +1,5 @@
 
-<div class="container mt-5">
+<div class="container mt-5 h-100">
     <h3 class="text-center">Commande enregistrée</h3>
     <hr/>
     <div class="row mx-auto">

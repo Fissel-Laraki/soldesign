@@ -2,7 +2,7 @@
 
 class Media extends Model{
 
-    public function insert($id,$url){
+    public function insertMedia($id,$url){
 
  
          echo $id;

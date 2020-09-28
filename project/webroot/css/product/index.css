@@ -3,7 +3,7 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 .product-grid3{font-family:Roboto,sans-serif;text-align:center;position:relative;z-index:1}
 .product-grid3 .product-image3{position:relative}
 .product-grid3 .product-image3 a{display:block}
-.product-grid3 .product-image3 img{width:100%;height:auto}
+/*.product-grid3 .product-image3 img{width:100%;height:auto}*/
 .product-grid3 .social{width:200px;padding:0;margin:0 auto;list-style:none;opacity:0;position:absolute;right:0;left:0;top:50%;transform:scale(0);transition:all .3s ease 0s}
 .product-grid3:hover .social{opacity:1;transform:scale(1)}
 .product-grid3 .social li{display:inline-block}
@@ -22,7 +22,7 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
     .product-grid3 .rating{margin:0}
     .myBorder{
     border-right: 2px solid black;
-}
+    }
 }
 @media only screen and (max-width:990px){.product-grid3{margin-bottom:30px}
 .product-grid3 .rating{margin:-22px 0 0}
@@ -30,6 +30,10 @@ h3.h3{text-align:center;margin:1em;text-transform:capitalize;font-size:1.7em;}
 @media only screen and (max-width:359px){.product-grid3 .rating{margin:0}
 }
 
+.pictures{
+
+    height: 300px !important;
+}
 
 .page-link{
     color : black;

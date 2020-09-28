@@ -5,16 +5,16 @@
     $minPrice = isset($minPrice)? $minPrice:0;
     $maxPrice = isset($maxPrice)? $maxPrice:200;
     $name = isset($name)? $name : "";
+    
 ?>
 <?php if($this->Session->get('Cart') == null) $this->Session->set('Cart',array()); ?>
 <?php
     unset($_GET['page']);
 ?>
-
-<div class="container-fluid mt-5">
+<div class="container-fluid mt-5 ">
     <div class="row">
-        <div class="col-lg-3 myBorder d-none d-lg-block col-sm-12  px-5 py-2" id="filter">
-            <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">FILTRER</button>
+        <div class="col-lg-4 myBorder d-none d-lg-block col-sm-12  px-5 py-2" id="filter">
+            <button class="btn btn-outline-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">FILTRER</button>
             <form action="<?=BASE_URL.DS.'product'?>" method="get" id="form">
             
                 <!-- filter -->
@@ -85,14 +85,14 @@
         </div>
         <!-- products -->
         <div class="col-8  mx-auto " id="products">
-        <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">show filters</button>
+        <button class="btn btn-outline-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">FILTRER</button>
             <div class="row">
                 <?php foreach($products as $product): ?>
                 <div class=" col-md-3 col-lg-3 col-sm-12 product justify-content-sm-center " data-filter-category="<?=$product->cid?>" data-filter-serie="<?=$product->sid?>">
                     <div class="product-grid3">
                         <div class="product-image3 overflow-hidden">
                             <a href="<?=BASE_URL.DS.'product'.DS.'article'.DS.$product->pid?>">
-                                <img class="pic-1" src="<?=SOURCE.DS.'img'.DS.$product->img_url ?>">
+                                <img class="pic-1 pictures" src="<?=SOURCE.DS.'img'.DS.$product->img_url ?>">
                             </a>
                             <ul class="social d-none d-lg-block">
                                 <li><button class="addCartBtn" onclick="addCart(<?=$product->pid?>)"><i class="fa fa-shopping-cart"></i></button></li>
@@ -143,7 +143,6 @@
 
 </div>
 <?php endif;?>
-
 
 
 <?php 

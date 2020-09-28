@@ -26,12 +26,12 @@
                         <h3 class="text-center">Connexion</h3>
                         <div class="form-group">
                             <label>Adresse mail</label>
-                            <input type="email" name="email" value="<?=$email?>" class="form-control"  aria-describedby="emailHelp">
+                            <input type="email" name="email" value="<?=$email?>" class="form-control"  aria-describedby="emailHelp" required>
                         </div>
                                     
                         <div class="form-group">
                             <label>Mot de passe</label>
-                            <input type="password" name="password" class="form-control" >
+                            <input type="password" name="password" class="form-control" required>
                         </div>
                         
                         <div class="form-group">

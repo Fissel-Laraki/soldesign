@@ -25,7 +25,6 @@ body {
   margin-bottom: 0px;
 }
 .footer{
-  
 
   background-color: black !important;
 }
@@ -34,7 +33,10 @@ img{
   width : 300px;
   height : 300px;
 }
-
+td ul li a.list-time :hover{
+  font-size:25px;
+  
+}
 
 .carousel-item {
   height: 60vh;
@@ -93,9 +95,20 @@ img{
 
 .tableLi{
   list-style-type: none;
+  color : red;
 }
 .tableTitle{
   color : white;
   text-align: center;
   font-size: larger;
+}
+a:hover {
+  color :red;
+}
+#quick{
+  height:25px;
+  background-color:red;
+  color:white;
+  text-align: center;
+  font-weight: bolder;
 }

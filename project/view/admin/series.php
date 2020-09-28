@@ -6,10 +6,11 @@
 <?php title("Gestion des series");?>
 
 
-<div class="container">
+<div class="container h-100">
 	<div class="row">
 		<div class="col-md-12">
 			<h4>Séries</h4>
+			<button id="addBtn" class="btn btn-dark my-5">Ajouter</button>
 			<div class="table-responsive">
 				<table id="mytable" class="table table-bordred table-striped">
 					<thead>
@@ -49,9 +50,15 @@
 					</tbody>
 				</table>
 				<div class="clearfix"></div>
-        <button id="addBtn" class="btn btn-primary">Ajouter Une serie</button>
 				
 			</div>
+			<form method="POST" action="<?=BASE_URL.DS.'admin'.DS.'addSerie'?>"  id="addForm" style="width:30%;margin-right:auto;margin-left:auto;">
+			<div class="form-group">
+				<label for="exampleInputEmail1">Name</label>
+				<input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+			</div>
+			<button type="submit" class="btn btn-outline-success">Confirmer</button>
+			</form>
 		</div>
 	</div>
 </div>
@@ -59,13 +66,6 @@
 
 
 
-<form method="POST" action="<?=BASE_URL.DS.'admin'.DS.'addSerie'?>"  id="addForm" style="width:30%;margin-right:auto;margin-left:auto;">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Name</label>
-    <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
 
 <?php 
     $otherScript = '<script src='.SOURCE.DS.'js'.DS.'admin'.DS.'articles.js>'.'</script>';

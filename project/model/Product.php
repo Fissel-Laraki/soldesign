@@ -22,8 +22,9 @@ class Product extends Model{
        $pre = $this->db->prepare($sql);
        $pre->execute();
 
-
     }
+
+    
 
 
 }

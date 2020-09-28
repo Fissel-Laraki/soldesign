@@ -61,6 +61,9 @@
     
     <body class="d-flex flex-column h-100 bg-light" >
          <!-- Navigation -->
+        <nav class="navbar-expand-lg"  id="quick">
+            Click & collect 3h, sur les produits en stock - votre commande prêt en magasin à emporter sous 3h
+        </nav>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
             <div class="container">
                     <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">
@@ -72,6 +75,11 @@
                     <div class="collapse navbar-collapse" id="navbarResponsive">
                         <ul class="navbar-nav ml-auto">
                             <?php if(!$admin) : ?>
+
+                                <li  class="nav-item <?php activate($title_layout,'Home') ?>">
+                                    <a class="nav-link" href="<?=BASE_URL.DS.'main'.DS?>"  role="button">Home</a>
+                                </li>
+                                <?php /*
                                 <li class="nav-item dropdown <?php activate($title_layout,'Home') ?>">
                                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Home
@@ -83,12 +91,13 @@
                                         <a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'main'.DS?>#about">A propos</a>
                                 
                                     </div>
-                                </li>
+                                </li>*/
+                                ?>
                             
                                 <li class="nav-item dropdown <?php activate($title_layout,'Nos produits') ?>">
                                     <a class="nav-link dropdown-toggle" href="#" id="showProducts" id="navbarDropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nos produits</a>
-                                    <div class="dropdown-menu dropdown-menu-right animate slideIn bg-dark  "  aria-labelledby="navbarDropdown">
-                                        <table class="table ">
+                                    <div class="dropdown-menu dropdown-menu-right animate slideIn"  style="background-color:black" aria-labelledby="navbarDropdown">
+                                        <table class="table" id="tableProduits" style="background-color:black">
                                             <thead  class="thead-dark">
                                                 <th scope="row" class="tableTitle">Carrelage</th>
                                                 <th scope="row" class="tableTitle">Accessoires</th>
@@ -99,14 +108,14 @@
                                                 <td>
                                                     <ul>
                                                         <?php foreach($categs as $categ):?>
-                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS.'?categories['.$categ->cid.']=on'?>"><?=$categ->name?></a></li>
+                                                            <li class="tableLi"><a class="dropdown-item text-white list-item"  style="background-color:black;font-size:20px" href="<?=BASE_URL.DS.'product'.DS.'?categories['.$categ->cid.']=on'?>"><?=$categ->name?></a></li>
                                                         <?php endforeach;?>
                                                     </ul>
                                                 </td>
                                                 <td>
                                                     <ul>
                                                         <?php foreach($accessories as $accessory):?>
-                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS?>"><?=ucfirst($accessory->name)?></a></li>
+                                                            <li class="tableLi"><a class="dropdown-item text-white list-item"  style="background-color:black;font-size:20px" href="<?=BASE_URL.DS.'product'.DS.'products?type=1&accessories['.$accessory->acid.']=on'?>"><?=ucfirst($accessory->name)?></a></li>
                                                         <?php endforeach;?>
                                                     
                                                     </ul>
@@ -114,7 +123,7 @@
                                                 <td>
                                                     <ul>
                                                         <?php foreach($consumables as $consumable):?>
-                                                            <li class="tableLi"><a class="dropdown-item bg-dark text-white" href="<?=BASE_URL.DS.'product'.DS?>"><?=ucfirst($consumable->name)?></a></li>
+                                                            <li class="tableLi"><a class="dropdown-item text-white list-item" style="background-color:black;font-size:20px"  href="<?=BASE_URL.DS.'product'.DS.'products?type=2&consumables['.$consumable->coid.']=on'?>"><?=ucfirst($consumable->name)?></a></li>
                                                         <?php endforeach;?>
                                                     
                                                     </ul>
@@ -140,7 +149,9 @@
                                     </a>
                                     <!-- Here's the magic. Add the .animate and .slide-in classes to your .dropdown-menu and you're all set! -->
                                     <div class="dropdown-menu dropdown-menu-right animate bg-dark  slideIn" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'other'?>">Accessoires</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'accessories'?>">Type d'accessoires</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'consumables'?>">Type de consommables</a>
+                                        <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'characteristics'?>">Caractéristiques</a>
                                         <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'articles'?>">Articles</a>
                                         <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'categories'?>">Catégories</a>
                                         <a class="dropdown-item bg-dark text-white"  href="<?=BASE_URL.DS.'admin'.DS.'series'?>">Series</a>

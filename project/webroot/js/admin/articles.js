@@ -38,3 +38,9 @@ $("#addCharac").on('click',()=>{
         beforeLastCol.append("<div class='form-group'><label>"+selectedText+"</label><input type='text' class='form-control'  name='"+selectedName+"'> </div>")
     }
 })
+
+$("#selectType").on('change',(event)=>{
+    selected = $("#selectType").find(":selected").val()
+    $(".types").addClass("d-none")
+    left = $(".types[data-tid='"+selected+"']").removeClass("d-none")
+})
