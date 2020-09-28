@@ -61,9 +61,11 @@
     
     <body class="d-flex flex-column h-100 bg-light" >
          <!-- Navigation -->
+        <?php if (!$admin) : ?>
         <nav class="navbar-expand-lg"  id="quick">
             Click & collect 3h, sur les produits en stock - votre commande prêt en magasin à emporter sous 3h
         </nav>
+        <?php endif;?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
             <div class="container">
                     <a class="navbar-brand" href="<?=BASE_URL.DS.'main'.DS?>">

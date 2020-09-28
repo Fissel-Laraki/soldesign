@@ -10,7 +10,7 @@
 <?php
     unset($_GET['page']);
 ?>
-    <div class="container-fluid mt-5">
+    <div class="container-fluid mt-5 h-100">
         <div class="row">
             <div class="col-lg-3 myBorder d-none d-lg-block col-sm-12  px-5 py-2" id="filter">
                 <button class="btn btn-dark my-3 d-block d-lg-none mx-auto" onclick="toggler()">FILTRER</button>
@@ -25,6 +25,7 @@
                     <!-- type -->
 
                     <?php 
+                    echo $type;
                     
                     $types[] = (object)array(
                         "tid" => 0,
@@ -38,8 +39,9 @@
                             <option value="<?=$t->tid?>" <?php if($type==$t->name) echo "selected";?>><?=$t->name?></option>
                         <?php endforeach;?>
                     </select>
-
+                    
                     <!--Consumable and Accessories -->
+                    <?php if($type == "accessory" || $type == "All") : ?>
                     <hr/>
                     <label for="accessories" class="font-weight-bold" >ACCESSORIES</label>
                     <?php foreach($accessories as $accessory): ?>
@@ -47,7 +49,9 @@
                             <label><input type="checkbox" name="accessories[<?=$accessory->acid?>]"  class="serieCheck" <?php if(isset($accessory->checked)) echo "checked"?>> <span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span><?=$accessory->name?></label>
                         </div>
                     <?php endforeach?>
+                    <?php endif;?>
 
+                    <?php if($type == "consumable" || $type == "All") : ?>
                     <hr/>
                     <label for="consumables" class="font-weight-bold" >CONSOMMABLES</label>
                     <?php foreach($consumables as $consumable): ?>
@@ -55,6 +59,7 @@
                             <label><input type="checkbox" name="consumables[<?=$consumable->coid?>]"  class="serieCheck" <?php if(isset($consumable->checked)) echo "checked"?>> <span class="cr"><i class="cr-icon fa fa-check" aria-hidden="true"></i></span><?=$consumable->name?></label>
                         </div>
                     <?php endforeach?>
+                    <?php endif;?>
 
                     <!-- Sale -->
                     <hr/>

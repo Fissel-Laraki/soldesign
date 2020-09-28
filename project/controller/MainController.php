@@ -4,6 +4,7 @@ class MainController extends Controller{
 
     
     function index(){
+        
         $this->loadModel('Category');
         $this->Category->primaryKey = 'cid';
 
